@@ -12,9 +12,9 @@ class Usuario extends Model
     protected $table = 'usuario';
 
     protected $fillable = [
-        'nombre',
+        'nombre_user',
+        'apellido_user',
         'correo',
-        'contrasena',
         'tipo_usuario'
     ];
 }

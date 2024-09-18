@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsuarioTable extends Migration
+class CreateGrupoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateUsuarioTable extends Migration
      */
     public function up()
     {
-        Schema::create('usuario', function (Blueprint $table) {
+        Schema::create('grupo', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_user');
-            $table->string('apellido_user');
-            $table->string('correo');
-            $table->integer('tipo_usuario');
+            $table->string('nombre_grupo');
+            $table->string('descripcion_grupo');
+            $table->foreignId('id_tutor')->constrained('usuario')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateUsuarioTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usuario');
+        Schema::dropIfExists('grupo');
     }
 }

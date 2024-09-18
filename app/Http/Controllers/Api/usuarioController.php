@@ -24,9 +24,9 @@ class usuarioController extends Controller
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
+            'nombre_user' => 'required',
+            'apellido_user' => 'required',
             'correo' => 'required|unique:usuario',
-            'contrasena' => 'required',
             'tipo_usuario' => 'required'
         ]);
 
@@ -39,9 +39,9 @@ class usuarioController extends Controller
             return response()->json($data, 400);
         }
         $usuario = Usuario::create([
-            'nombre' => $request->nombre,
+            'nombre_user' => $request->nombre_user,
+            'apellido_user' => $request->apellido_user,
             'correo' => $request->correo,
-            'contrasena' => $request->contrasena,
             'tipo_usuario' => $request->tipo_usuario
         ]);
 
@@ -71,7 +71,7 @@ class usuarioController extends Controller
             return response()->json($data, 404);
         }
         $data = [
-            'student' => $usuario,
+            'usuario' => $usuario,
             'status' => 200
         ];
         return response()->json($data, 200);
@@ -104,9 +104,9 @@ class usuarioController extends Controller
             return response()->json($data, 404);
         }
         $usuario->update([
-            'nombre' => $request->nombre,
+            'nombre_user' => $request->nombre_user,
+            'apellido_user' => $request->apellido_user,
             'correo' => $request->correo,
-            'contrasena' => $request->contrasena,
             'tipo_usuario' => $request->tipo_usuario
         ]);
         $data = [
@@ -127,7 +127,8 @@ class usuarioController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'nombre' => '',
+            'nombre_user' => '',
+            'apellido_user' => '',
             'correo' => 'unique:usuario',
             'contrasena' => '',
             'tipo_usuario' => ''
@@ -142,14 +143,14 @@ class usuarioController extends Controller
             return response()->json($data, 400);
         }
 
-        if($request->has('nombre')){
-            $usuario->nombre = $request->nombre;
+        if($request->has('nombre_user')){
+            $usuario->nombre_user = $request->nombre_user;
+        }
+        if($request->has('apellido_user')){
+            $usuario->apellido_user = $request->apellido_user;
         }
         if($request->has('correo')){
             $usuario->correo = $request->correo;
-        }
-        if($request->has('contrasena')){
-            $usuario->contrasena = $request->contrasena;
         }
         if($request->has('tipo_usuario')){
             $usuario->tipo_usuario = $request->tipo_usuario;

@@ -16,14 +16,14 @@ class CreateHistoriaUsuarioTable extends Migration
         Schema::create('historia_usuario', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_sprint')->constrained('sprint')->onDetelete('cascade');
-            $table->string('identificador_hu');
-            $table->string('prerrequisitos');
-            $table->string('descripcion_hu');
-            $table->integer('prioridad');
-            $table->integer('tiempo_estimado');
+            $table->string('identificador_hu')->nullable();
+            $table->string('prerrequisitos')->nullable();
+            $table->string('descripcion_hu')->nullable();
+            $table->integer('prioridad')->nullable();
+            $table->integer('tiempo_estimado')->nullable();
             $table->string('titulo_hu');
-            $table->string('criterios_aceptacion');
-            $table->string('mockup');
+            $table->string('criterios_aceptacion')->nullable();
+            $table->string('mockup')->nullable();
             $table->timestamps();
         });
     }

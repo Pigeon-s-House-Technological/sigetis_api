@@ -4,27 +4,29 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+use App\Models\Historia_usuario;
+
 
 class historiaUsuarioController extends Controller
 {
     public function index(){
-        $usuarios = Usuario::all();
-        if($usuarios->isEmpty()){
+        $hus = Historia_usuario::all();
+        if($hus->isEmpty()){
             $data = [
-                'message' => 'No hay usuarios registrados',
+                'message' => 'No hay hus registrados',
                 'status' => 200
             ];
             return response()->json($data, 404);
         }
-        return response()->json($usuarios, 200);
+        return response()->json($hus, 200);
     }
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'nombre_user' => 'required',
-            'apellido_user' => 'required',
-            'correo' => 'required|unique:usuario',
-            'tipo_usuario' => 'required'
+            'titulo_hu' => 'required',
+            'id_sprint' => 'required'
         ]);
 
         if($validator->fails()){
@@ -35,23 +37,28 @@ class historiaUsuarioController extends Controller
             ];
             return response()->json($data, 400);
         }
-        $usuario = Usuario::create([
-            'nombre_user' => $request->nombre_user,
-            'apellido_user' => $request->apellido_user,
-            'correo' => $request->correo,
-            'tipo_usuario' => $request->tipo_usuario
+        $hu = Historia_usuario::create([
+            'id_sprint' => $request->id_sprint,
+            //'identificador_hu' => $request->identificador_hu,
+            //'prerrequisitos' => $request->prerrequisitos,
+            //'descripcion_hu' => $request->descripcion_hu,
+            //'prioridad' => $request->prioridad,
+            //'tiempo_estimado' => $request->tiempo_estimado,
+            'titulo_hu' => $request->titulo_hu,
+            //'criterios_aceptacion' => $request->criterios_aceptacion,
+            //'mockup' => $request->mockup
         ]);
 
-        if(!$usuario){
+        if(!$hu){
             $data = [
-                'message' => 'Error al crear el usuario',
+                'message' => 'Error al crear el hu',
                 'status' => 500
             ];
             return response()->json($data, 500);
         }
 
         $data = [
-            'message' => $usuario,
+            'message' => $hu,
             'status' => 201
         ];
 
@@ -59,105 +66,85 @@ class historiaUsuarioController extends Controller
     }
 
     public function show($id){
-        $usuario = Usuario::find($id);
-        if(!$usuario){
+        $hu = Historia_usuario::find($id);
+        if(!$hu){
             $data = [
-                'message' => 'Usuario no encontrado',
+                'message' => 'Historia_usuario no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
         $data = [
-            'usuario' => $usuario,
+            'hu' => $hu,
             'status' => 200
         ];
         return response()->json($data, 200);
     }
 
     public function destroy($id){
-        $usuario = Usuario::find($id);
-        if(!$usuario){
+        $hu = Historia_usuario::find($id);
+        if(!$hu){
             $data = [
-                'message' => 'Usuario no encontrado',
+                'message' => 'Historia_usuario no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
-        $usuario->delete();
+        $hu->delete();
         $data = [
-            'message' => 'Usuario eliminado',
+            'message' => 'Historia_usuario eliminado',
             'status' => 200
         ];
         return response()->json($data, 200);
     }
 
     public function update(Request $request, $id){
-        $usuario = Usuario::find($id);
-        if(!$usuario){
+        $hu = Historia_usuario::find($id);
+        if(!$hu){
             $data = [
-                'message' => 'Usuario no encontrado',
+                'message' => 'Historia_usuario no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
-        $usuario->update([
-            'nombre_user' => $request->nombre_user,
-            'apellido_user' => $request->apellido_user,
-            'correo' => $request->correo,
-            'tipo_usuario' => $request->tipo_usuario
+        $hu->update([
+            //'id_sprint' => $request->id_sprint,
+            //'identificador_hu' => $request->identificador_hu,
+            //'prerrequisitos' => $request->prerrequisitos,
+            //'descripcion_hu' => $request->descripcion_hu,
+            //'prioridad' => $request->prioridad,
+            //'tiempo_estimado' => $request->tiempo_estimado,
+            'titulo_hu' => $request->titulo_hu,
+            //'criterios_aceptacion' => $request->criterios_aceptacion,
+            //'mockup' => $request->mockup
         ]);
         $data = [
-            'message' => 'Usuario actualizado',
+            'message' => 'Historia_usuario actualizado',
             'status' => 200
         ];
         return response()->json($data, 200);
     }
 
     public function updatePartial(Request $request, $id){
-        $usuario = Usuario::find($id);
-        if(!$usuario){
+        $hu = Historia_usuario::find($id);
+        if(!$hu){
             $data = [
-                'message' => 'Usuario no encontrado',
+                'message' => 'Historia_usuario no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
 
-        $validator = Validator::make($request->all(), [
-            'nombre_user' => '',
-            'apellido_user' => '',
-            'correo' => 'unique:usuario',
-            'contrasena' => '',
-            'tipo_usuario' => ''
-        ]);
+        if($request->has('titulo_hu')){
+            $hu->titulo_hu = $request->titulo_hu;
+        }
+        
 
-        if($validator->fails()){
-            $data = [
-                'message' => 'Error en la validacion de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ];
-            return response()->json($data, 400);
-        }
-
-        if($request->has('nombre_user')){
-            $usuario->nombre_user = $request->nombre_user;
-        }
-        if($request->has('apellido_user')){
-            $usuario->apellido_user = $request->apellido_user;
-        }
-        if($request->has('correo')){
-            $usuario->correo = $request->correo;
-        }
-        if($request->has('tipo_usuario')){
-            $usuario->tipo_usuario = $request->tipo_usuario;
-        }
-
-        $usuario->save();
+        $hu->save();
 
         $data = [
-            'message' => 'Usuario actualizado',
-            'usuario' => $usuario,
+            'message' => 'Historia_usuario actualizado',
+            'hu' => $hu,
             'status' => 200
         ];
 

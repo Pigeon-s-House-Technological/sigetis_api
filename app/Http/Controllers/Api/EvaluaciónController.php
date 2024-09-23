@@ -70,7 +70,7 @@ class EvaluationController extends Controller
 
     public function destroy($id){
         $evaluacion = evaluacion::find($id);
-        if(!$evaluacions){
+        if(!$evaluacion){
             $data = [
                 'message' => 'Evaluación no encontrada',
                 'status' => 404
@@ -135,7 +135,7 @@ class EvaluationController extends Controller
             $evaluacion->nombre_evaluacion = $request->nombre_evaluacion;
         }
         if($request->has('tipo_evalucion')){
-            $evaluacion->tipo_evalucion = $request->tipo_evaluacion;
+            $evaluacion->tipo_evaluacion = $request->tipo_evaluacion;
         }
         if($request->has('estado_evaluacion')){
             $evaluacion->estado_evaluacion = $request->estado_evaluacion;

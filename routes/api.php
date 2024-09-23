@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\EvaluaciónController;
 use App\Http\Controllers\Api\historiaUsuarioController;
 use App\Http\Controllers\Api\ActividadController as Actividad;
+use App\Http\Controllers\Api\ElementoController as Resultado;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -54,4 +55,11 @@ Route::post('/actividades', [Actividad::class, 'store']);
 Route::put('/actividades/{id}', [Actividad::class, 'update']);
 Route::patch('/actividades/{id}', [Actividad::class, 'updatePartial']);
 Route::delete('/actividades/{id}', [Actividad::class, 'destroy']);
+
+Route::get('/resultados', [Resultado::class, 'index']);
+Route::get('/resultados/{id}', [Resultado::class, 'show']);
+Route::post('/resultados', [Resultado::class, 'store']);
+Route::put('/resultados/{id}', [Resultado::class, 'update']);
+Route::patch('/resultados/{id}', [Resultado::class, 'updatePartial']);
+Route::delete('/resultados/{id}', [Resultado::class, 'destroy']);
 

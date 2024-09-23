@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\EvaluaciónController;
+use App\Http\Controllers\Api\historiaUsuarioController;
+use App\Http\Controllers\Api\ActividadController as Actividad;
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -37,3 +40,18 @@ Route::get('/criterios/{id}', [criterioController::class, 'show']);
 Route::put('/criterios/{id}', [criterioController::class, 'update']);
 Route::patch('/criterios/{id}', [criterioController::class, 'updatePartial']);
 Route::delete('/criterios/{id}', [criterioController::class, 'destroy']);
+
+Route::get('/historiaUsuarios', [historiaUsuarioController::class, 'index']);
+Route::get('/historiaUsuarios/{id}', [historiaUsuarioController::class, 'show']);
+Route::post('/historiaUsuarios', [historiaUsuarioController::class, 'store']);
+Route::put('/historiaUsuarios/{id}', [historiaUsuarioController::class, 'update']);
+Route::patch('/historiaUsuarios/{id}', [historiaUsuarioController::class, 'updatePartial']);
+Route::delete('/historiaUsuarios/{id}', [historiaUsuarioController::class, 'destroy']);
+
+Route::get('/actividades', [Actividad::class, 'index']);
+Route::get('/actividades/{id}', [Actividad::class, 'show']);
+Route::post('/actividades', [Actividad::class, 'store']);
+Route::put('/actividades/{id}', [Actividad::class, 'update']);
+Route::patch('/actividades/{id}', [Actividad::class, 'updatePartial']);
+Route::delete('/actividades/{id}', [Actividad::class, 'destroy']);
+

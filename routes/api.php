@@ -37,3 +37,5 @@ Route::get('/criterios/{id}', [criterioController::class, 'show']);
 Route::put('/criterios/{id}', [criterioController::class, 'update']);
 Route::patch('/criterios/{id}', [criterioController::class, 'updatePartial']);
 Route::delete('/criterios/{id}', [criterioController::class, 'destroy']);
+
+Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'contador_de_estados']);

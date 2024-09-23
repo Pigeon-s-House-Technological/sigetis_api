@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Evaluacion;
-use App\Models\CriterioEvaluacion;
 use Illiminate\Support\Facades\Validator;
 
 class EvaluationController extends Controller
 {
     public function getEvaluations()
     {
-        $evaluacion = evaluacion::all();
+        $evaluacion = Evaluacion::all();
         if ($evaluacion->isEmpty()) {
             $data = [
                 'message' => 'No se encontraron Evaluaciones',
@@ -34,7 +33,7 @@ class EvaluationController extends Controller
             ];
             return response()->json($data, 400);
         }
-        $evaluacion = evaluacion::create([
+        $evaluacion = Evaluacion::create([
             'nombre_evaluacion' => $request->nombre_evaluacion,
             'tipo_evaluacion' => $request->tipo_evaluacion,
             'estado_evaluacion' => $request->estado_evaluacion
@@ -53,7 +52,7 @@ class EvaluationController extends Controller
         return response()->json($data, 201);
     }
     public function show($id){
-        $evaluacion = evaluacion::find($id);
+        $evaluacion = Evaluacion::find($id);
         if(!$evaluacion){
             $data = [
                 'message' => 'Evaluación no encontrada',
@@ -69,7 +68,7 @@ class EvaluationController extends Controller
     }
 
     public function destroy($id){
-        $evaluacion = evaluacion::find($id);
+        $evaluacion = Evaluacion::find($id);
         if(!$evaluacion){
             $data = [
                 'message' => 'Evaluación no encontrada',
@@ -86,7 +85,7 @@ class EvaluationController extends Controller
     }
 
     public function update(Request $request, $id){
-        $evaluacion = evaluacion::find($id);
+        $evaluacion = Evaluacion::find($id);
         if(!$evaluacion){
             $data = [
                 'message' => 'Evaluación no encontrada',
@@ -107,7 +106,7 @@ class EvaluationController extends Controller
     }
 
     public function updatePartial(Request $request, $id){
-        $evaluacion = evaluacion::find($id);
+        $evaluacion = Evaluacion::find($id);
         if(!$evaluacion){
             $data = [
                 'message' => 'Evaluación no encontrada',

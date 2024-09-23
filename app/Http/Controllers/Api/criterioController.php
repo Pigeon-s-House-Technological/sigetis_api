@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CriterioEvaluacion;
+use App\Models\Criterio_evaluacion;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -12,7 +12,7 @@ class criterioController extends Controller
 {
     public function getcriterio()
     {
-        $criterio_evaluacion = criterio_evaluacion::all();
+        $criterio_evaluacion = Criterio_evaluacion::all();
         if ($criterio_evaluacion->isEmpty()) {
             $data = [
                 'message' => 'No se encontraron Criterios de Evaluación',
@@ -34,7 +34,7 @@ class criterioController extends Controller
             ];
             return response()->json($data, 400);
         }
-        $criterio_evaluacion = criterio_evaluacion::create([
+        $criterio_evaluacion = Criterio_evaluacion::create([
             'id_evaluacion' => $request->id_evaluacion,
             'titulo_criterio' => $request->titulo_criterio
         ]);
@@ -52,7 +52,7 @@ class criterioController extends Controller
         return response()->json($data, 201);
     }
     public function show($id){
-        $criterio_evaluacion = criterio_evaluacion::find($id);
+        $criterio_evaluacion = Criterio_evaluacion::find($id);
         if(!$criterio_evaluacion){
             $data = [
                 'message' => 'Criterio de evaluación no encontrada',
@@ -68,7 +68,7 @@ class criterioController extends Controller
     }
 
     public function destroy($id){
-        $criterio_evaluacion = criterio_evaluacion::find($id);
+        $criterio_evaluacion = Criterio_evaluacion::find($id);
         if(!$criterio_evaluacion){
             $data = [
                 'message' => 'Criterio de evaluación no encontrado',
@@ -85,7 +85,7 @@ class criterioController extends Controller
     }
 
     public function update(Request $request, $id){
-        $criterio_evaluacion = criterio_evaluacion::find($id);
+        $criterio_evaluacion = Criterio_evaluacion::find($id);
         if(!$criterio_evaluacion){
             $data = [
                 'message' => 'Criterio evaluación no encontrado',
@@ -105,7 +105,7 @@ class criterioController extends Controller
     }
 
     public function updatePartial(Request $request, $id){
-        $criterio_evaluacion = criterio_evaluacion::find($id);
+        $criterio_evaluacion = Criterio_evaluacion::find($id);
         if(!$criterio_evaluacion){
             $data = [
                 'message' => 'Criterio de evaluación no encontrada',

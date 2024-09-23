@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class grupoController extends Controller
 {
     public function index(){
-        $grupo = grupo::all();
+        $grupo = Grupo::all();
         if($grupo->isEmpty()){
             $data = [
                 'message' => 'No hay Grupos registrados',
@@ -37,7 +37,7 @@ class grupoController extends Controller
             ];
             return response()->json($data, 400);
         }
-        $grupo = grupo::create([
+        $grupo = Grupo::create([
             'nombre_grupo' => $request->nombre_grupo,
             'descripcion_grupo' => $request->descripcion_grupo,
             'id_tutor' => $request->id_tutor
@@ -60,7 +60,7 @@ class grupoController extends Controller
     }
 
     public function show($id){
-        $grupo = grupo::find($id);
+        $grupo = Grupo::find($id);
         if(!$grupo){
             $data = [
                 'message' => 'Grupo no encontrado',
@@ -76,7 +76,7 @@ class grupoController extends Controller
     }
 
     public function destroy($id){
-        $grupo = grupo::find($id);
+        $grupo = Grupo::find($id);
         if(!$grupo){
             $data = [
                 'message' => 'Grupo no encontrado',
@@ -93,7 +93,7 @@ class grupoController extends Controller
     }
 
     public function update(Request $request, $id){
-        $grupo = grupo::find($id);
+        $grupo = Grupo::find($id);
         if(!$grupo){
             $data = [
                 'message' => 'Grupo no encontrado',
@@ -114,7 +114,7 @@ class grupoController extends Controller
     }
 
     public function updatePartial(Request $request, $id){
-        $grupo = grupo::find($id);
+        $grupo = Grupo::find($id);
         if(!$grupo){
             $data = [
                 'message' => 'Grupo no encontrado',

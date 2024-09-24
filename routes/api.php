@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\EvaluaciónController;
+use App\Http\Controllers\Api\criteriosController;
+use App\Http\Controllers\Api\estadis_evaluacioneController;
+use App\Http\Controllers\Api\grupoController;
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -39,3 +43,6 @@ Route::patch('/criterios/{id}', [criterioController::class, 'updatePartial']);
 Route::delete('/criterios/{id}', [criterioController::class, 'destroy']);
 
 Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'contador_de_estados']);
+Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'porcentaje_de_estados']);
+Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'listar_estado']);
+Route::get('/evaluaciones/tipo', [estadis_evaluacionController::class, 'tipo_evaluacion']);

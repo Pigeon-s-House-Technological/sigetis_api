@@ -17,5 +17,15 @@ class Usuario extends Model
         'correo',
         'tipo_usuario'
     ];
+
+    public function grupos()
+    {
+        return $this->belongsToMany(Grupo::class, 'usuario_grupo', 'id_usuario', 'id_grupo');
+    }
+
+    public function evaluaciones()
+    {
+        return $this->belongsToMany(Evaluacion::class, 'grupo_evaluacion', 'id_usuario', 'id_evaluacion');
+    }
 }
 

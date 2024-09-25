@@ -14,6 +14,12 @@ class Evaluacion extends Model
     protected $fillable = [
         'nombre_evaluacion',
         'tipo_evaluacion',
-        'estado_evaluacion'
+        'estado_evaluacion',
+        'tipo_destinatario'
     ];
+
+    public function grupos()
+    {
+        return $this->belongsToMany(Grupo::class, 'grupo_evaluacion', 'id_evaluacion', 'id_grupo');
+    }
 }

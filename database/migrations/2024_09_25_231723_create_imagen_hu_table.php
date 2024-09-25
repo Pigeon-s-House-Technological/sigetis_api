@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGrupoTable extends Migration
+class CreateImagenHuTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateGrupoTable extends Migration
      */
     public function up()
     {
-        Schema::create('grupo', function (Blueprint $table) {
+        Schema::create('imagen_hu', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_grupo');
-            $table->string('descripcion_grupo');
-            $table->foreignId('id_tutor')->constrained('usuario')->onDelete('cascade');
-            $table->foreignId('id_jefe_grupo')->constrained('usuario')->onDelete('cascade');
+            $table->foreignId('id_hu')->constrained('historia_usuario')->onDetelete('cascade');
+            $table->string('nombre_imagen');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateGrupoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grupo');
+        Schema::dropIfExists('imagen_hu');
     }
 }

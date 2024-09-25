@@ -18,6 +18,7 @@ class CreateEvaluacionTable extends Migration
             $table->string('nombre_evaluacion');
             $table->integer('tipo_evaluacion');
             $table->boolean('estado_evaluacion');
+            $table->boolean('tipo_destinatario');//se refiere a si es tipo grupal o individual
             $table->timestamps();
         });
     }

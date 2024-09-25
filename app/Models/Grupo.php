@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Usuario;
+use App\Models\Evaluacion;
+
 
 class Grupo extends Model
 {

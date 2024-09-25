@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Criterio_evaluacion;
+
 class Pregunta_opcion_multiple extends Model
 {
     use HasFactory;

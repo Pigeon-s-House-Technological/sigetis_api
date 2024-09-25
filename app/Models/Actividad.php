@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Historia_usuario;
+use App\Models\Usuario;
+
 class Actividad extends Model
 {
     use HasFactory;

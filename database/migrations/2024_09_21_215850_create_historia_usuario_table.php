@@ -15,7 +15,7 @@ class CreateHistoriaUsuarioTable extends Migration
     {
         Schema::create('historia_usuario', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_sprint')->constrained('sprint')->onDetelete('cascade');
+            $table->foreignId('id_sprint')->constrained('sprint')->onDelete('cascade');
             $table->string('identificador_hu')->nullable();
             $table->string('prerrequisitos')->nullable();
             $table->string('descripcion_hu')->nullable();

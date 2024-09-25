@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateActividadTable extends Migration
+class CreateImagenHuTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateActividadTable extends Migration
      */
     public function up()
     {
-        Schema::create('actividad', function (Blueprint $table) {
+        Schema::create('imagen_hu', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_hu')->constrained('historia_usuario')->onDetelete('cascade');
-            $table->foreignId('id_usuario')->constrained('usuario')->onDetelete('cascade');
-            $table->string('nombre_actividad');
-            $table->string('estado_actividad');
+            $table->string('nombre_imagen');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateActividadTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('actividad');
+        Schema::dropIfExists('imagen_hu');
     }
 }

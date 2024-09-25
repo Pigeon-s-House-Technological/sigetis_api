@@ -18,6 +18,7 @@ class CreateGrupoTable extends Migration
             $table->string('nombre_grupo');
             $table->string('descripcion_grupo');
             $table->foreignId('id_tutor')->constrained('usuario')->onDelete('cascade');
+            $table->foreignId('id_jefe_grupo')->constrained('usuario')->onDelete('cascade');
             $table->timestamps();
         });
     }

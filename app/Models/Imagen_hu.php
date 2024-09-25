@@ -6,36 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Historia_usuario;
-use App\Models\Usuario;
 
-class Actividad extends Model
+class Imagen_hu extends Model
 {
     use HasFactory;
 
-    protected $table = 'actividad';
+    protected $table = 'imagen_hu';
 
     protected $fillable = [
         'id_hu',
-        'id_usuario',
-        'nombre_actividad',
-        'estado_actividad',
+        'nombre_imagen'
     ];
 
     /**
      * Define la relación con el modelo Historia_usuario.
      */
-
-    public function historia_usuario()
+    public function historiaUsuario()
     {
         return $this->belongsTo(Historia_usuario::class, 'id_hu');
-    }
-
-    /**
-     * Define la relación con el modelo Usuario.
-     */
-
-    public function usuario()
-    {
-        return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 }

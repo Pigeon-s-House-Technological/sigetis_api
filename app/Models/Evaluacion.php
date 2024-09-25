@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Grupo;
+
 class Evaluacion extends Model
 {
     use HasFactory;
@@ -14,6 +16,12 @@ class Evaluacion extends Model
     protected $fillable = [
         'nombre_evaluacion',
         'tipo_evaluacion',
-        'estado_evaluacion'
+        'estado_evaluacion',
+        'tipo_destinatario'
     ];
+
+    public function grupos()
+    {
+        return $this->belongsToMany(Grupo::class, 'grupo_evaluacion', 'id_evaluacion', 'id_grupo');
+    }
 }

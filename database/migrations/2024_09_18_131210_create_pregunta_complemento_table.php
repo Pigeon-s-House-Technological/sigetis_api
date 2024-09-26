@@ -16,7 +16,7 @@ class CreatePreguntaComplementoTable extends Migration
         Schema::create('pregunta_complemento', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_criterio_evaluacion')->constrained('criterio_evaluacion')->onDelete('cascade');
-            $table->string('respuesta_complemento');
+            $table->string('respuesta_complemento')->nullable();
             $table->string('pregunta_complemento');
             $table->timestamps();
         });

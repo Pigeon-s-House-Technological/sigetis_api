@@ -16,7 +16,7 @@ class CreatePreguntaOpcionMultipleTable extends Migration
         Schema::create('pregunta_opcion_multiple', function (Blueprint $table) {
             $table->id();
             $table->string('pregunta_opcion_multiple');
-            $table->boolean('estado_opcion_multiple');
+            $table->boolean('estado_opcion_multiple')->default(0);
             $table->timestamps();
         });
     }

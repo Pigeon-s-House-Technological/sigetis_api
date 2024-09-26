@@ -18,9 +18,9 @@ class CreateActividadTable extends Migration
             $table->foreignId('id_hu')->constrained('historia_usuario')->onDetelete('cascade');
             $table->foreignId('id_usuario')->constrained('usuario')->onDetelete('cascade');
             $table->string('nombre_actividad');
-            $table->string('estado_actividad');
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
+            $table->string('estado_actividad')->nullable();
+            $table->date('fecha_inicio')->nullable();
+            $table->date('fecha_fin')->nullable();
             $table->timestamps();
         });
     }

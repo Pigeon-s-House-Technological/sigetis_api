@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Grupo;
+use App\Models\Usuario;
+use App\Models\AsignacionEvaluacion;
 
 class Evaluacion extends Model
 {
@@ -20,8 +22,8 @@ class Evaluacion extends Model
         'tipo_destinatario'
     ];
 
-    public function grupos()
+    public function asignacionEvaluacion()
     {
-        return $this->belongsToMany(Grupo::class, 'grupo_evaluacion', 'id_evaluacion', 'id_grupo');
+        return $this->hasMany(AsignacionEvaluacion::class, 'id_evaluacion');
     }
 }

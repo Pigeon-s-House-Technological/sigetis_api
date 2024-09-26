@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Usuario;
 use App\Models\Evaluacion;
+use App\Models\AsignacionEvaluacion;
 
 
 class Grupo extends Model
@@ -37,8 +38,8 @@ class Grupo extends Model
         return $this->belongsToMany(Usuario::class, 'usuario_grupo', 'id_grupo', 'id_usuario');
     }
 
-    public function evaluaciones()
+    public function asignacionEvaluacion()
     {
-        return $this->belongsToMany(Evaluacion::class, 'grupo_evaluacion', 'id_grupo', 'id_evaluacion');
+        return $this->hasMany(asignacionEvaluacion::class, 'id_grupo');
     }
 }

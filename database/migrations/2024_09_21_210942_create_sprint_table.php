@@ -17,8 +17,8 @@ class CreateSprintTable extends Migration
             $table->id();
             $table->foreignId('id_grupo')->constrained('grupo')->onDetelete('cascade');
             $table->integer('numero_sprint');
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
+            $table->date('fecha_inicio')->nullable();
+            $table->date('fecha_fin')->nullable();
             $table->timestamps();
         });
     }

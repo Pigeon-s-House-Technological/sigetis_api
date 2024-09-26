@@ -17,7 +17,7 @@ class CreatePreguntaPuntuacionTable extends Migration
             $table->id();
             $table->foreignId('id_criterio_evaluacion')->constrained('criterio_evaluacion')->onDelete('cascade');
             $table->integer('puntuacion');
-            $table->integer('respuesta_puntuacion');
+            $table->integer('respuesta_puntuacion')->nullable();
             $table->timestamps();
         });
     }

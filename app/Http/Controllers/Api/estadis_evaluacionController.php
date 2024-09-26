@@ -67,12 +67,35 @@ class estadis_evalucionController extends Controller
 
     public function tipo_evaluacion()
     {
+        if (!($autoevaluaciones->isEmpty())){
+            $autoevaluaciones = Evaluacion::where('tipo_evaluacion', 1)->get();
+            $data = [
+                'autoevaluaciones' => $autoevaluaciones,
+                'status' => 200
+            ];
+    
+            return response()->json($data, 200);
+        }
+        if (!($evaluaciones_cruzadas->isEmpty())) {
+            $evaluaciones_cruzadas = Evaluacion::where('tipo_evaluacion', 2)->get();
+            $data = [
+                'evaluaciones_cruzadas' => $evaluaciones_cruzadas,
+                'status' => 200
+            ];
+    
+            return response()->json($data, 200);
+        }
+        if (!($evaluaciones_en_pares->isEmpty())) {
+            $evaluaciones_en_pares = Evaluacion::where('tipo_evaluacion', 3)->get();
+            $data = [
+                
+                'evaluaciones_en_pares' => $evaluaciones_en_pares,
+                'status' => 200
+            ];
+    
+            return response()->json($data, 200);
+        }
         
-        $autoevaluaciones = Evaluacion::where('tipo_evaluacion', 'Autoevaluación')->get();
-        
-        $evaluaciones_cruzadas = Evaluacion::where('tipo_evaluacion', 'Evaluación Cruzada')->get();
-        
-        $evaluaciones_en_pares = Evaluacion::where('tipo_evaluacion', 'Evaluación en Pares')->get();
 
         if ($autoevaluaciones->isEmpty() && $evaluaciones_cruzadas->isEmpty() && $evaluaciones_en_pares->isEmpty()) {
             return response()->json([
@@ -80,14 +103,5 @@ class estadis_evalucionController extends Controller
                 'status' => 404
             ], 404);
         }
-
-        $data = [
-            'autoevaluaciones' => $autoevaluaciones,
-            'evaluaciones_cruzadas' => $evaluaciones_cruzadas,
-            'evaluaciones_en_pares' => $evaluaciones_en_pares,
-            'status' => 200
-        ];
-
-        return response()->json($data, 200);
     }
 }

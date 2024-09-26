@@ -5,10 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\EvaluaciónController;
-use App\Http\Controllers\Api\criteriosController;
-use App\Http\Controllers\Api\estadis_evaluacioneController;
-use App\Http\Controllers\Api\grupoController;
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -21,7 +17,7 @@ Route::put('/usuarios/{id}', [usuarioController::class, 'update']);
 Route::patch('/usuarios/{id}', [usuarioController::class, 'updatePartial']);
 Route::delete('/usuarios/{id}', [usuarioController::class, 'destroy']);
 
-Route::get('/evaluaciones', [EvaluacionController::class, 'getEvaluations']);
+Route::get('/evaluaciones', [EvaluacionController::class, 'index']);
 Route::post('/evaluaciones', [EvaluacionController::class, 'store']); 
 Route::get('/evaluaciones/{id}', [EvaluacionController::class, 'show']);
 Route::put('/evaluaciones/{id}', [EvaluacionController::class, 'update']);
@@ -35,7 +31,7 @@ Route::put('/grupos/{id}', [grupoController::class, 'update']);
 Route::patch('/grupos/{id}', [grupoController::class, 'updatePartial']);
 Route::delete('/grupos/{id}', [grupoController::class, 'destroy']);
 
-Route::get('/criterios', [criterioController::class, 'getcriterio']);
+Route::get('/criterios', [criterioController::class, 'index']);
 Route::post('/criterios', [criterioController::class, 'store']); 
 Route::get('/criterios/{id}', [criterioController::class, 'show']);
 Route::put('/criterios/{id}', [criterioController::class, 'update']);
@@ -46,3 +42,18 @@ Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'contad
 Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'porcentaje_de_estados']);
 Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'listar_estado']);
 Route::get('/evaluaciones/tipo', [estadis_evaluacionController::class, 'tipo_evaluacion']);
+
+Route::get('/historiaUsuarios', [historiaUsuarioController::class, 'index']);
+Route::get('/historiaUsuarios/{id}', [historiaUsuarioController::class, 'show']);
+Route::post('/historiaUsuarios', [historiaUsuarioController::class, 'store']);
+Route::put('/historiaUsuarios/{id}', [historiaUsuarioController::class, 'update']);
+Route::patch('/historiaUsuarios/{id}', [historiaUsuarioController::class, 'updatePartial']);
+Route::delete('/historiaUsuarios/{id}', [historiaUsuarioController::class, 'destroy']);
+
+Route::get('/actividades', [Actividad::class, 'index']);
+Route::get('/actividades/{id}', [Actividad::class, 'show']);
+Route::post('/actividades', [Actividad::class, 'store']);
+Route::put('/actividades/{id}', [Actividad::class, 'update']);
+Route::patch('/actividades/{id}', [Actividad::class, 'updatePartial']);
+Route::delete('/actividades/{id}', [Actividad::class, 'destroy']);
+

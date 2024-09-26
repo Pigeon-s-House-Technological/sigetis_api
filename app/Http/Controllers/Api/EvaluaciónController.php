@@ -8,7 +8,7 @@ use Illiminate\Support\Facades\Validator;
 
 class EvaluationController extends Controller
 {
-    public function getEvaluations()
+    public function index()
     {
         $evaluacion = Evaluacion::all();
         if ($evaluacion->isEmpty()) {

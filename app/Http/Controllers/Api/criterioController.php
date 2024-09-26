@@ -8,7 +8,7 @@ use App\Models\CriterioEvaluacion;
 use Illiminate\Support\Facades\Validator;
 
 
-class criterioController extends Controller
+class CriterioController extends Controller
 {
     public function getcriterio()
     {

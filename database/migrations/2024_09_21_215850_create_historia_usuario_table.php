@@ -23,7 +23,6 @@ class CreateHistoriaUsuarioTable extends Migration
             $table->integer('tiempo_estimado')->nullable();
             $table->string('titulo_hu');
             $table->string('criterios_aceptacion')->nullable();
-            $table->string('mockup')->nullable();
             $table->timestamps();
         });
     }

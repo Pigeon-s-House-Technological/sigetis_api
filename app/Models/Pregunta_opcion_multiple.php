@@ -15,11 +15,16 @@ class Pregunta_opcion_multiple extends Model
 
     protected $fillable = [
         'pregunta_opcion_multiple',
-        'estado_opcion_multiple'
+        'tipo_opcion_multiple',
+        'id_criterio_evaluacion'
     ];
 
-    public function criterios()
+    /**
+     * Define la relación con el modelo Criterio_evaluacion.
+     */
+    public function criterio_evaluacion()
     {
-        return $this->belongsToMany(Criterio_evaluacion::class, 'pregunta_multiple_criterio', 'id_pregunta_opcion_multiple', 'id_criterio_evaluacion');
+        return $this->belongsTo(Criterio_evaluacion::class, 'id_criterio_evaluacion');
     }
+
 }

@@ -32,6 +32,6 @@ class Criterio_evaluacion extends Model
      */
     public function pregunta_opcion_multiple()
     {
-        return $this->belongsToMany(Pregunta_opcion_multiple::class, 'pregunta_multiple_criterio', 'id_criterio_evaluacion', 'id_pregunta_opcion_multiple');
+        return $this->hasMany(Pregunta_opcion_multiple::class, 'id_criterio_evaluacion');
     }
 }

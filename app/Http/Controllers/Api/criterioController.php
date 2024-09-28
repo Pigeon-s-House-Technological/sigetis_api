@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CriterioEvaluacion;
-use Illiminate\Support\Facades\Validator;
+use App\Models\Criterio_evaluacion;
+use Illuminate\Support\Facades\Validator;
 
 
 class CriterioController extends Controller
 {
-    public function getcriterio()
+    public function index()
     {
-        $criterio_evaluacion = criterio_evaluacion::all();
+        $criterio_evaluacion = Criterio_evaluacion::all();
         if ($criterio_evaluacion->isEmpty()) {
             $data = [
                 'message' => 'No se encontraron Criterios de Evaluación',
@@ -34,7 +34,7 @@ class CriterioController extends Controller
             ];
             return response()->json($data, 400);
         }
-        $criterio_evaluacion = criterio_evaluacion::create([
+        $criterio_evaluacion = Criterio_evaluacion::create([
             'id_evaluacion' => $request->id_evaluacion,
             'titulo_criterio' => $request->titulo_criterio
         ]);
@@ -52,7 +52,7 @@ class CriterioController extends Controller
         return response()->json($data, 201);
     }
     public function show($id){
-        $criterio_evaluacion = criterio_evaluacion::find($id);
+        $criterio_evaluacion = Criterio_evaluacion::find($id);
         if(!$criterio_evaluacion){
             $data = [
                 'message' => 'Criterio de evaluación no encontrada',
@@ -68,27 +68,27 @@ class CriterioController extends Controller
     }
 
     public function destroy($id){
-        $criterio_evaluacion = criterio_evaluacion::find($id);
-        if(!$criterio_evaluacions){
+        $criterio_evaluacion = Criterio_evaluacion::find($id);
+        if(!$criterio_evaluacion){
             $data = [
-                'message' => 'Criterio de evaluación no encontrada',
+                'message' => 'Criterio de evaluación no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
         $criterio_evaluacion->delete();
         $data = [
-            'message' => 'Criterio de evaluación eliminada',
+            'message' => 'Criterio de evaluación eliminado',
             'status' => 200
         ];
         return response()->json($data, 200);
     }
 
     public function update(Request $request, $id){
-        $criterio_evaluacion = criterio_evaluacion::find($id);
+        $criterio_evaluacion = Criterio_evaluacion::find($id);
         if(!$criterio_evaluacion){
             $data = [
-                'message' => 'Criterio evaluación no encontrada',
+                'message' => 'Criterio evaluación no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
@@ -105,7 +105,7 @@ class CriterioController extends Controller
     }
 
     public function updatePartial(Request $request, $id){
-        $criterio_evaluacion = criterio_evaluacion::find($id);
+        $criterio_evaluacion = Criterio_evaluacion::find($id);
         if(!$criterio_evaluacion){
             $data = [
                 'message' => 'Criterio de evaluación no encontrada',
@@ -113,11 +113,11 @@ class CriterioController extends Controller
             ];
             return response()->json($data, 404);
         }
-
         $validator = Validator::make($request->all(), [
-            'id_evaluacion' => 'required',
-            'titulo_criterio' => 'required'
+            'id_evaluacion' => 'required_without_all:titulo_criterio',
+            'titulo_criterio' => 'required_without_all:id_evaluacion'
         ]);
+        
 
         if($validator->fails()){
             $data = [
@@ -129,7 +129,7 @@ class CriterioController extends Controller
         }
 
         if($request->has('id_evaluacion')){
-            $criterio_evaluacion->id_evaluacion = $request->criterio_evaluacion;
+            $criterio_evaluacion->id_evaluacion = $request->id_evaluacion;
         }
         if($request->has('titulo_criterio')){
             $criterio_evaluacion->titulo_criterio = $request->titulo_criterio;

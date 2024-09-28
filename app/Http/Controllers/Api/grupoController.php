@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Grupo;
-use Illiminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validator;
 
 
 class grupoController extends Controller
 {
     public function index(){
-        $grupo = grupo::all();
+        $grupo = Grupo::all();
         if($grupo->isEmpty()){
             $data = [
                 'message' => 'No hay Grupos registrados',
@@ -37,7 +37,7 @@ class grupoController extends Controller
             ];
             return response()->json($data, 400);
         }
-        $grupo = grupo::create([
+        $grupo = Grupo::create([
             'nombre_grupo' => $request->nombre_grupo,
             'descripcion_grupo' => $request->descripcion_grupo,
             'id_tutor' => $request->id_tutor
@@ -45,7 +45,7 @@ class grupoController extends Controller
 
         if(!$grupo){
             $data = [
-                'message' => 'Error al crear criterio',
+                'message' => 'Error al crear grupo',
                 'status' => 500
             ];
             return response()->json($data, 500);
@@ -60,10 +60,10 @@ class grupoController extends Controller
     }
 
     public function show($id){
-        $grupo = grupo::find($id);
+        $grupo = Grupo::find($id);
         if(!$grupo){
             $data = [
-                'message' => 'Criterio no encontrado',
+                'message' => 'Grupo no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
@@ -76,24 +76,24 @@ class grupoController extends Controller
     }
 
     public function destroy($id){
-        $grupo = grupo::find($id);
+        $grupo = Grupo::find($id);
         if(!$grupo){
             $data = [
-                'message' => 'Criterio no encontrado',
+                'message' => 'Grupo no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
         $grupo->delete();
         $data = [
-            'message' => 'Criterio eliminado',
+            'message' => 'Grupo eliminado',
             'status' => 200
         ];
         return response()->json($data, 200);
     }
 
     public function update(Request $request, $id){
-        $grupo = grupo::find($id);
+        $grupo = Grupo::find($id);
         if(!$grupo){
             $data = [
                 'message' => 'Grupo no encontrado',
@@ -107,14 +107,14 @@ class grupoController extends Controller
             'id_tutor' => $request->id_tutor
         ]);
         $data = [
-            'message' => 'Criterio actualizado',
+            'message' => 'Grupo actualizado',
             'status' => 200
         ];
         return response()->json($data, 200);
     }
 
     public function updatePartial(Request $request, $id){
-        $grupo = grupo::find($id);
+        $grupo = Grupo::find($id);
         if(!$grupo){
             $data = [
                 'message' => 'Grupo no encontrado',
@@ -122,13 +122,12 @@ class grupoController extends Controller
             ];
             return response()->json($data, 404);
         }
-
         $validator = Validator::make($request->all(), [
-            'nombre_grupo' => 'required',
-            'descripcion_grupo' => 'required',
-            'id_tutor' => 'required'
+            'nombre_grupo' => 'required_without_all:descripcion_grupo,id_tutor',
+            'descripcion_grupo' => 'required_without_all:nombre_grupo,id_tutor',
+            'id_tutor' => 'required_without_all:nombre_grupo,descripcion_grupo'
         ]);
-
+        
         if($validator->fails()){
             $data = [
                 'message' => 'Error en la validacion de los datos',
@@ -145,7 +144,7 @@ class grupoController extends Controller
             $grupo->descripcion_grupo = $request->descripcion_grupo;
         }
         if($request->has('id_tutor')){
-            $grupo->id_tutor = $request->id_grupo;
+            $grupo->id_tutor = $request->id_tutor;
         }
 
         $grupo->save();

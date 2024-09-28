@@ -18,7 +18,6 @@ class Evaluacion extends Model
     protected $fillable = [
         'nombre_evaluacion',
         'tipo_evaluacion',
-        'estado_evaluacion',
         'tipo_destinatario'
     ];
 

@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CriterioController extends Controller
 {
-    public function index()
-    {
+    public function index(){
         $criterio_evaluacion = Criterio_evaluacion::all();
         if ($criterio_evaluacion->isEmpty()) {
             $data = [

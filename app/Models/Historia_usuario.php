@@ -21,8 +21,7 @@ class Historia_usuario extends Model
         'prioridad',
         'tiempo_estimado',
         'titulo_hu',
-        'criterios_aceptacion',
-        'mockup', // Asegúrate de incluir la columna imagen
+        'criterios_aceptacion'
     ];
 
     /**

@@ -16,9 +16,11 @@ class Actividad extends Model
 
     protected $fillable = [
         'id_hu',
-        'id_usuario',
         'nombre_actividad',
         'estado_actividad',
+        'fecha_inicio',
+        'fecha_fin',
+        'encargado',
     ];
 
     /**
@@ -37,5 +39,10 @@ class Actividad extends Model
     public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'id_usuario');
+    }
+
+    public function encargado()
+    {
+        return $this->belongsTo(Usuario::class, 'encargado');
     }
 }

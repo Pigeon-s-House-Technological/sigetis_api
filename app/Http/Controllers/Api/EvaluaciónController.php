@@ -23,7 +23,7 @@ class EvaluationController extends Controller
         $validator = Validator::make($request->all(), [
             'nombre_evaluacion' => 'required',
             'tipo_evaluacion' => 'required',
-            'estado_evaluacion' => 'required'
+            'tipo_destinatario' => 'required'
         ]);
         If($validator->fails()){
             $data = [
@@ -36,7 +36,7 @@ class EvaluationController extends Controller
         $evaluacion = Evaluacion::create([
             'nombre_evaluacion' => $request->nombre_evaluacion,
             'tipo_evaluacion' => $request->tipo_evaluacion,
-            'estado_evaluacion' => $request->estado_evaluacion
+            'tipo_destinatario' => $request->tipo_destinatario
         ]);
         if (!$evaluacion){
             $data = [
@@ -96,7 +96,7 @@ class EvaluationController extends Controller
         $evaluacion->update([
             'nombre_evaluacion' => $request->nombre_evaluacion,
             'tipo_evaluacion' => $request->tipo_evaluacion,
-            'estado_evaluacion' => $request->estado_evaluacion
+            'tipo_destinatario' => $request->tipo_destinatario
         ]);
         $data = [
             'message' => 'Evaluación actualizada',
@@ -116,9 +116,9 @@ class EvaluationController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'nombre_evaluacion' => 'required',
-            'tipo_evaluacion' => 'required',
-            'estado_evaluacion' => 'required'
+            'nombre_evaluacion' => '',
+            'tipo_evaluacion' => '',
+            'tipo_destinatario' => ''
         ]);
 
         if($validator->fails()){
@@ -136,9 +136,6 @@ class EvaluationController extends Controller
         if($request->has('tipo_evalucion')){
             $evaluacion->tipo_evaluacion = $request->tipo_evaluacion;
         }
-        if($request->has('estado_evaluacion')){
-            $evaluacion->estado_evaluacion = $request->estado_evaluacion;
-        }
         $evaluacion->save();
 
         $data = [
@@ -148,10 +145,5 @@ class EvaluationController extends Controller
         ];
 
         return response()->json($data, 200);
-    }
-    public function getCriterioEvaluacion()
-    {
-        $criterios = CriterioEvaluacion::with('evaluacion')->get(); 
-        return response()->json($criterios);
     }
 }

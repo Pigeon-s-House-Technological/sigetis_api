@@ -144,9 +144,4 @@ class CriterioController extends Controller
 
         return response()->json($data, 200);
     }
-    public function getCriterioEvaluacion()
-    {
-        $criterios = CriterioEvaluacion::with('evaluacion')->get(); 
-        return response()->json($criterios);
-    }
 }

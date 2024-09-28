@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\ElementoController;
 use App\Http\Controllers\Api\PreguntaPuntuacionController;
 use App\Http\Controllers\Api\GrupoController;
 use App\Http\Controllers\Api\CriterioController;
+use App\Http\Controllers\Api\estadis_evaluacionController;
+use App\Http\Controllers\Api\SprintController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -25,6 +27,7 @@ Route::apiResource('actividades', ActividadController::class);
 Route::apiResource('resultados', ElementoController::class);
 Route::apiResource('preguntasPuntuacion', PreguntaPuntuacionController::class);
 Route::apiResource('usuarios', usuarioController::class);
+Route::apiResource('sprints', SprintController::class);
 
 // Rutas personalizadas
 Route::patch('/evaluaciones/{id}', [EvaluacionController::class, 'updatePartial']);
@@ -35,6 +38,7 @@ Route::patch('/actividades/{id}', [ActividadController::class, 'updatePartial'])
 Route::patch('/resultados/{id}', [ElementoController::class, 'updatePartial']);
 Route::patch('/preguntasPuntuacion/{id}', [PreguntaPuntuacionController::class, 'updatePartial']);
 Route::patch('/usuarios/{id}', [usuarioController::class, 'updatePartial']);
+Route::patch('/sprints/{id}', [SprintController::class, 'updatePartial']);
 
 Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);
 Route::get('/evaluaciones/estado-individual', [estadis_evaluacionController::class, 'contador_estados_por_usuario']);

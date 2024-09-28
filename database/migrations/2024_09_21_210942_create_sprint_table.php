@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEvaluacionTable extends Migration
+class CreateSprintTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateEvaluacionTable extends Migration
      */
     public function up()
     {
-        Schema::create('evaluacion', function (Blueprint $table) {
+        Schema::create('sprint', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_evaluacion');
-            $table->integer('tipo_evaluacion');
-            $table->boolean('tipo_destinatario');//se refiere a si es tipo grupal o individual
+            $table->foreignId('id_grupo')->constrained('grupo')->onDetelete('cascade');
+            $table->integer('numero_sprint');
+            $table->date('fecha_inicio')->nullable();
+            $table->date('fecha_fin')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateEvaluacionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('evaluacion');
+        Schema::dropIfExists('sprint');
     }
 }

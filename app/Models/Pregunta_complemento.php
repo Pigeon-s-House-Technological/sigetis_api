@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Criterio_evaluacion;
+
 class Pregunta_complemento extends Model
 {
     use HasFactory;
@@ -13,8 +15,7 @@ class Pregunta_complemento extends Model
 
     protected $fillable = [
         'id_criterio_evaluacion',
-        'pregunta_complemento',
-        'respuesta_complemento'
+        'pregunta_complemento'
     ];
 
     /**

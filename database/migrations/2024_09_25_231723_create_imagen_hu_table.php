@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEvaluacionTable extends Migration
+class CreateImagenHuTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateEvaluacionTable extends Migration
      */
     public function up()
     {
-        Schema::create('evaluacion', function (Blueprint $table) {
+        Schema::create('imagen_hu', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_evaluacion');
-            $table->integer('tipo_evaluacion');
-            $table->boolean('tipo_destinatario');//se refiere a si es tipo grupal o individual
+            $table->foreignId('id_hu')->constrained('historia_usuario')->onDetelete('cascade');
+            $table->string('nombre_imagen');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateEvaluacionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('evaluacion');
+        Schema::dropIfExists('imagen_hu');
     }
 }

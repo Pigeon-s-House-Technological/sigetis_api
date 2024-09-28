@@ -8,7 +8,7 @@ use App\Models\Criterio_evaluacion;
 use Illuminate\Support\Facades\Validator;
 
 
-class criterioController extends Controller
+class CriterioController extends Controller
 {
     public function index()
     {

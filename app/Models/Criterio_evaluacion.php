@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Evaluacion;
+use App\Models\Pregunta_opcion_multiple;
+
 class Criterio_evaluacion extends Model
 {
     use HasFactory;
@@ -22,5 +25,13 @@ class Criterio_evaluacion extends Model
     public function evaluacion()
     {
         return $this->belongsTo(Evaluacion::class, 'id_evaluacion');
+    }
+
+    /**
+     * Define la relación con el modelo Pregunta_opcion_multiple.
+     */
+    public function pregunta_opcion_multiple()
+    {
+        return $this->hasMany(Pregunta_opcion_multiple::class, 'id_criterio_evaluacion');
     }
 }

@@ -36,7 +36,6 @@ Route::patch('/resultados/{id}', [ElementoController::class, 'updatePartial']);
 Route::patch('/preguntasPuntuacion/{id}', [PreguntaPuntuacionController::class, 'updatePartial']);
 Route::patch('/usuarios/{id}', [usuarioController::class, 'updatePartial']);
 
-Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'contador_de_estados']);
-Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'porcentaje_de_estados']);
-Route::get('/evaluaciones/estado', [estadis_evaluacionController::class, 'listar_estado']);
+Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);
+Route::get('/evaluaciones/estado-individual', [estadis_evaluacionController::class, 'contador_estados_por_usuario']);
 Route::get('/evaluaciones/tipo', [estadis_evaluacionController::class, 'tipo_evaluacion']);

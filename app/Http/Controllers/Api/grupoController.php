@@ -26,7 +26,8 @@ class grupoController extends Controller
         $validator = Validator::make($request->all(), [
             'nombre_grupo' => 'required',
             'descripcion_grupo' => 'required',
-            'id_tutor' => 'required'
+            'id_tutor' => 'required',
+            'id_jefe_grupo' => 'required'
         ]);
 
         if($validator->fails()){
@@ -40,7 +41,8 @@ class grupoController extends Controller
         $grupo = Grupo::create([
             'nombre_grupo' => $request->nombre_grupo,
             'descripcion_grupo' => $request->descripcion_grupo,
-            'id_tutor' => $request->id_tutor
+            'id_tutor' => $request->id_tutor,
+            'id_jefe_grupo' => $request->id_jefe_grupo
         ]);
 
         if(!$grupo){
@@ -104,7 +106,9 @@ class grupoController extends Controller
         $grupo->update([
             'nombre_grupo' => $request->nombre_grupo,
             'descripcion_grupo' => $request->descripcion_grupo,
-            'id_tutor' => $request->id_tutor
+            'id_tutor' => $request->id_tutor,
+            'id_jefe_grupo' => $request->id_jefe_grupo
+
         ]);
         $data = [
             'message' => 'Grupo actualizado',
@@ -125,7 +129,8 @@ class grupoController extends Controller
         $validator = Validator::make($request->all(), [
             'nombre_grupo' => 'required_without_all:descripcion_grupo,id_tutor',
             'descripcion_grupo' => 'required_without_all:nombre_grupo,id_tutor',
-            'id_tutor' => 'required_without_all:nombre_grupo,descripcion_grupo'
+            'id_tutor' => 'required_without_all:nombre_grupo,descripcion_grupo',
+            'id_jefe_grupo' => 'required_without_all:nombre_grupo,descripcion_grupo,id_tutor'
         ]);
         
         if($validator->fails()){
@@ -145,6 +150,9 @@ class grupoController extends Controller
         }
         if($request->has('id_tutor')){
             $grupo->id_tutor = $request->id_tutor;
+        }
+        if($request->has('id_jefe_grupo')){
+            $grupo->id_jefe_grupo = $request->id_jefe_grupo;
         }
 
         $grupo->save();

@@ -16,7 +16,7 @@ class Pregunta_puntuacion extends Model
     protected $fillable = [
         'id_criterio_evaluacion',
         'puntuacion',
-        'respuesta_puntuacion'
+        'pregunta_puntuacion'
     ];
 
     /**

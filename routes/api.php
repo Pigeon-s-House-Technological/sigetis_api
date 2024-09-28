@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\EvaluaciónController;
-use App\Http\Controllers\Api\historiaUsuarioController;
+use App\Http\Controllers\Api\HistoriaUsuarioController;
 use App\Http\Controllers\Api\ActividadController;
 use App\Http\Controllers\Api\ElementoController;
 use App\Http\Controllers\Api\PreguntaPuntuacionController;

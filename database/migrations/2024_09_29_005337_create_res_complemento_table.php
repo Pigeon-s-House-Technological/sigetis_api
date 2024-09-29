@@ -15,9 +15,9 @@ class CreateResComplementoTable extends Migration
     {
         Schema::create('res_complemento', function (Blueprint $table) {
             $table->id();
-            $table->foreign('id_pregunta_complemento')->constrained('pregunta_complemento')->onDelete('cascade');
+            $table->foreignId('id_pregunta_complemento')->constrained('pregunta_complemento')->onDelete('cascade');
             $table->string('respuesta_complemento');
-            $table->foreign('id_grupo_evaluacion')->constrained('grupo_evaluacion')->onDelete('cascade');
+            $table->foreignId('id_grupo_evaluacion')->constrained('grupo_evaluacion')->onDelete('cascade');
             $table->timestamps();
         });
     }

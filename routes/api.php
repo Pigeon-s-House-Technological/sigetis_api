@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\usuarioController;
-use App\Http\Controllers\Api\EvaluaciónController;
+use App\Http\Controllers\Api\EvaluacionController;
 use App\Http\Controllers\Api\HistoriaUsuarioController;
 use App\Http\Controllers\Api\ActividadController;
 use App\Http\Controllers\Api\ElementoController;
@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\GrupoController;
 use App\Http\Controllers\Api\CriterioController;
 use App\Http\Controllers\Api\estadis_evaluacionController;
 use App\Http\Controllers\Api\SprintController;
+use App\Http\Controllers\Api\PreguntaOpcionMultipleController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -28,18 +29,20 @@ Route::apiResource('resultados', ElementoController::class);
 Route::apiResource('preguntasPuntuacion', PreguntaPuntuacionController::class);
 Route::apiResource('usuarios', usuarioController::class);
 Route::apiResource('sprints', SprintController::class);
+Route::apiResource('preguntasOpcionMultiple', PreguntaOpcionMultipleController::class);
 
 // Rutas personalizadas
-Route::patch('/evaluaciones/{id}', [EvaluacionController::class, 'updatePartial']);
-Route::patch('/grupos/{id}', [GrupoController::class, 'updatePartial']);
-Route::patch('/criterios/{id}', [CriterioController::class, 'updatePartial']);
-Route::patch('/historiaUsuarios/{id}', [HistoriaUsuarioController::class, 'updatePartial']);
-Route::patch('/actividades/{id}', [ActividadController::class, 'updatePartial']);
-Route::patch('/resultados/{id}', [ElementoController::class, 'updatePartial']);
-Route::patch('/preguntasPuntuacion/{id}', [PreguntaPuntuacionController::class, 'updatePartial']);
-Route::patch('/usuarios/{id}', [usuarioController::class, 'updatePartial']);
-Route::patch('/sprints/{id}', [SprintController::class, 'updatePartial']);
+Route::patch('/evaluacionesP/{id}', [EvaluacionController::class, 'updatePartial']);
+Route::patch('/gruposP/{id}', [GrupoController::class, 'updatePartial']);
+Route::patch('/criteriosP/{id}', [CriterioController::class, 'updatePartial']);
+Route::patch('/historiaUsuariosP/{id}', [HistoriaUsuarioController::class, 'updatePartial']);
+Route::patch('/actividadesP/{id}', [ActividadController::class, 'updatePartial']);
+Route::patch('/resultadosP/{id}', [ElementoController::class, 'updatePartial']);
+Route::patch('/preguntasPuntuacionP/{id}', [PreguntaPuntuacionController::class, 'updatePartial']);
+Route::patch('/usuariosP/{id}', [usuarioController::class, 'updatePartial']);
+Route::patch('/sprintsP/{id}', [SprintController::class, 'updatePartial']);
+Route::patch('/preguntasOpcionMultipleP/{id}', [PreguntaOpcionMultipleController::class, 'updatePartial']);
 
-Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);
+Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);//1->auto,2->cruzada,3->pares
 Route::get('/evaluaciones/estado-individual', [estadis_evaluacionController::class, 'contador_estados_por_usuario']);
 Route::get('/evaluaciones/tipo', [estadis_evaluacionController::class, 'tipo_evaluacion']);

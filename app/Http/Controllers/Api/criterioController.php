@@ -17,6 +17,7 @@ class CriterioController extends Controller
                 'message' => 'No se encontraron Criterios de Evaluación',
                 'status' => 200
             ];
+            return response()->json($data, 200);
         }
         return response()->json($criterio_evaluacion, 200);
     }

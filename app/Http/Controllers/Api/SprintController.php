@@ -4,21 +4,25 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+use App\Models\Sprint;
 
 class SprintController extends Controller
 {
     public function index(){
-        $sprint = Sprint::all();
-        if ($sprint->isEmpty()) {
+        $sprints = Sprint::all();
+        if($sprints->isEmpty()){
             $data = [
-                'message' => 'No se encontraron Sprints',
+                'message' => 'No hay sprints registrados',
                 'status' => 200
             ];
+            return response()->json($data, 404);
         }
-        return response()->json($sprint, 200);
+        return response()->json($sprints, 200);
     }
 
-    public function store(){
+    public function store(Request $request){
 
         $validator = Validator::make($request->all(),
         [
@@ -27,6 +31,15 @@ class SprintController extends Controller
             'fecha_inicio' => 'nullable',
             'fecha_fin' => 'nullable'
         ]);
+
+        if($validator->fails()){
+            $data = [
+                'message' => 'Error en la validacion de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
+        }
 
         $sprint = Sprint::create([
             'id_grupo' => $request->id_grupo,
@@ -77,7 +90,7 @@ class SprintController extends Controller
         return response()->json($data, 200);
     }
 
-    public function update(Request $request, $id){
+    public function updatePartial(Request $request, $id){
         $sprint = Sprint::find($id);
         if (!$sprint){
             $data = [

@@ -127,9 +127,9 @@ class grupoController extends Controller
             return response()->json($data, 404);
         }
         $validator = Validator::make($request->all(), [
-            'nombre_grupo' => 'required_without_all:descripcion_grupo,id_tutor',
-            'descripcion_grupo' => 'required_without_all:nombre_grupo,id_tutor',
-            'id_tutor' => 'required_without_all:nombre_grupo,descripcion_grupo',
+            'nombre_grupo' => 'required_without_all:descripcion_grupo,id_tutor,id_jefe_grupo',
+            'descripcion_grupo' => 'required_without_all:nombre_grupo,id_tutor,id_jefe_grupo',
+            'id_tutor' => 'required_without_all:nombre_grupo,descripcion_grupo,id_jefe_grupo',
             'id_jefe_grupo' => 'required_without_all:nombre_grupo,descripcion_grupo,id_tutor'
         ]);
         
@@ -159,7 +159,7 @@ class grupoController extends Controller
 
         $data = [
             'message' => 'Grupo actualizado',
-            'usuario' => $grupo,
+            'grupo' => $grupo,
             'status' => 200
         ];
 

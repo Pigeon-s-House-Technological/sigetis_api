@@ -16,7 +16,6 @@ class Opcion_pregunta_multiple extends Model
     protected $fillable = [
         'id_pregunta_multiple',
         'opcion_pregunta',
-        'correcta'
     ];
 
     public function pregunta_opcion_multiple(){

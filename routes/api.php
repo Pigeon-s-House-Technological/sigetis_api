@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\estadis_evaluacionController;
 use App\Http\Controllers\Api\SprintController;
 use App\Http\Controllers\Api\PreguntaOpcionMultipleController;
 use App\Http\Controllers\Api\PreguntaComplementoController;
+use App\Http\Controllers\Api\AsignacionEvaluacionController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -32,6 +33,7 @@ Route::apiResource('usuarios', usuarioController::class);
 Route::apiResource('sprints', SprintController::class);
 Route::apiResource('preguntasOpcionMultiple', PreguntaOpcionMultipleController::class);
 Route::apiResource('preguntasComplemento', PreguntaComplementoController::class);
+Route::apiResource('asignaciones', AsignacionEvaluacionController::class);
 
 // Rutas personalizadas
 Route::patch('/evaluacionesP/{id}', [EvaluacionController::class, 'updatePartial']);
@@ -45,6 +47,7 @@ Route::patch('/usuariosP/{id}', [usuarioController::class, 'updatePartial']);
 Route::patch('/sprintsP/{id}', [SprintController::class, 'updatePartial']);
 Route::patch('/preguntasOpcionMultipleP/{id}', [PreguntaOpcionMultipleController::class, 'updatePartial']);
 Route::patch('/preguntasComplementoP/{id}', [PreguntaComplementoController::class, 'updatePartial']);
+Route::patch('/asignacionesP/{id}', [AsignacionEvaluacionController::class, 'updatePartial']);
 
 Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);//1->auto,2->cruzada,3->pares
 Route::get('/evaluaciones/estado-individual', [estadis_evaluacionController::class, 'contador_estados_por_usuario']);

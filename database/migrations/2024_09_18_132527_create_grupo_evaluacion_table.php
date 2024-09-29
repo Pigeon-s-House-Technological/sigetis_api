@@ -16,8 +16,8 @@ class CreateGrupoEvaluacionTable extends Migration
         Schema::create('grupo_evaluacion', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_evaluacion')->constrained('evaluacion')->onDelete('cascade');
-            $table->foreignId('id_grupo')->constrained('grupo')->onDelete('cascade')->nullable();
-            $table->foreignId('id_usuario')->constrained('usuario')->onDelete('cascade')->nullable();
+            $table->foreignId('id_grupo')->nullable()->constrained('grupo')->onDelete('cascade');
+            $table->foreignId('id_usuario')->nullable()->constrained('usuario')->onDelete('cascade');
             $table->boolean('estado_evaluacion');
             $table->timestamps();
         });

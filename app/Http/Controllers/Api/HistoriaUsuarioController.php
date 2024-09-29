@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\Historia_usuario;
 
@@ -16,11 +17,12 @@ class HistoriaUsuarioController extends Controller
                 'message' => 'No se encontraron hus',
                 'status' => 200
             ];
+            return response()->json($data, 200);
         }
         return response()->json($hu, 200);
     }
 
-    public function store(){
+    public function store(Request $request){
 
         $validator = Validator::make($request->all(),
         [
@@ -33,6 +35,15 @@ class HistoriaUsuarioController extends Controller
             'tiempo_estimado' => 'nullable',
             'criterios_aceptacion' => 'nullable'
         ]);
+
+        if($validator->fails()){
+            $data = [
+                'message' => 'Error en la validacion de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
+        }
 
         $hu = Historia_usuario::create([
             'id_sprint' => $request->id_sprint,

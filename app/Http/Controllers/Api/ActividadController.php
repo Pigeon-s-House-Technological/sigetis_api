@@ -17,17 +17,28 @@ class ActividadController extends Controller
                 'message' => 'No se encontraron Actividades',
                 'status' => 200
             ];
+            return response()->json($data, 200);
         }
+        
         return response()->json($actividad, 200);
     }
 
-    public function store(){
+    public function store(Request $request){
 
         $validator = Validator::make($request->all(),
         [
             'id_hu' => 'required',
             'nombre_actividad' => 'required',
         ]);
+
+        if($validator->fails()){
+            $data = [
+                'message' => 'Error en la validacion de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ];
+            return response()->json($data, 400);
+        }
 
         $actividad = Actividad::create([
             'id_hu' => $request->id_hu,
@@ -108,11 +119,11 @@ class ActividadController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'id_hu' => 'required_without_all:nombre_actividad,estado_actividad,fecha_inicio,fecha_fin,encargado',
-            'nombre_actividad' => 'required_without_all:estado_actividad,fecha_inicio,fecha_fin,encargado',
-            'estado_actividad' => 'required_without_all:fecha_inicio,fecha_fin,encargado',
-            'fecha_inicio' => 'required_without_all:fecha_fin,encargado',
-            'fecha_fin' => 'required_without_all:encargado',
-            'encargado' => 'required_without_all:fecha_fin'
+            'nombre_actividad' => 'required_without_all:estado_actividad,fecha_inicio,fecha_fin,encargado,id_hu',
+            'estado_actividad' => 'required_without_all:fecha_inicio,fecha_fin,encargado,id_hu,nombre_actividad',
+            'fecha_inicio' => 'required_without_all:fecha_fin,encargado,id_hu,estado_actividad,nombre_actividad',
+            'fecha_fin' => 'required_without_all:encargado,id_hu,fecha_inicio,estado_actividad,nombre_actividad',
+            'encargado' => 'required_without_all:fecha_fin,id_hu,fecha_inicio,estado_actividad,nombre_actividad'
         ]);
         
 
@@ -153,7 +164,7 @@ class ActividadController extends Controller
 
         $data = [
             'message' => 'Criterio de evaluación actualizado',
-            'evaluacion' => $criterio_evaluacion,
+            'actividad' => $actividad,
             'status' => 200
         ];
 

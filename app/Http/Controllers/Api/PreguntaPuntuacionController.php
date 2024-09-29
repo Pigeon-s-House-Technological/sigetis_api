@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 use App\Models\Pregunta_puntuacion;
@@ -22,7 +23,7 @@ class PreguntaPuntuacionController extends Controller
         return response()->json($preguntasPuntuacion, 200);
     }
 
-    public function store(){
+    public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'id_criterio_evaluacion' => 'required',
             'puntuacion' => 'required',

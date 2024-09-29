@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Evaluacion;
-use Illiminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Validator;
 
-class EvaluationController extends Controller
+class EvaluacionController extends Controller
 {
     public function index()
     {
@@ -16,6 +16,7 @@ class EvaluationController extends Controller
                 'message' => 'No se encontraron Evaluaciones',
                 'status' => 200
             ];
+            return response()->json($data, 200);
         }
         return response()->json($evaluacion, 200);
     }

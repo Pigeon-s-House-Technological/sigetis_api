@@ -111,11 +111,8 @@ class PreguntaComplementoController extends Controller
             return response()->json($data, 400);
         }
 
-        if ($request->pregunta_opcion_multiple != null) {
-            $preg_comp->pregunta_opcion_multiple = $request->pregunta_opcion_multiple;
-        }
-        if ($request->tipo_opcion_multiple != null) {
-            $preg_comp->tipo_opcion_multiple = $request->tipo_opcion_multiple;
+        if ($request->pregunta_complemento != null) {
+            $preg_comp->pregunta_complemento = $request->pregunta_complemento;
         }
         if ($request->id_criterio_evaluacion != null) {
             $preg_comp->id_criterio_evaluacion = $request->id_criterio_evaluacion;

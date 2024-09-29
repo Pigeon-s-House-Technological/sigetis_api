@@ -16,7 +16,7 @@ use App\Http\Controllers\Api\SprintController;
 use App\Http\Controllers\Api\PreguntaOpcionMultipleController;
 use App\Http\Controllers\Api\PreguntaComplementoController;
 use App\Http\Controllers\Api\AsignacionEvaluacionController;
-use App\Htto\Controllers\Api\OpcionPreguntaMultipleController;
+use App\Http\Controllers\Api\OpcionPreguntaMultipleController;
 use App\Http\Controllers\Api\RespuestaComplementoController;
 use App\Http\Controllers\Api\RespuestaOpcionMultipleController;
 

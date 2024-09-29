@@ -15,9 +15,9 @@ class CreateResOpMultipleTable extends Migration
     {
         Schema::create('res_op_multiple', function (Blueprint $table) {
             $table->id();
-            $table->foreign('id_opcion_pregunta_multiple')->constrained('opcion_preg_mult')->onDelete('cascade');
+            $table->foreignId('id_opcion_pregunta_multiple')->constrained('opcion_preg_mult')->onDelete('cascade');
             $table->boolean('estado_respuesta_opcion_multiple');
-            $table->foreign('id_grupo_evaluacion')->constrained('grupo_evaluacion')->onDelete('cascade');
+            $table->foreignId('id_grupo_evaluacion')->constrained('grupo_evaluacion')->onDelete('cascade');
             $table->timestamps();
         });
     }

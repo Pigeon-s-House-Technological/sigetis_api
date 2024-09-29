@@ -15,9 +15,9 @@ class CreateResPuntuacionTable extends Migration
     {
         Schema::create('res_puntuacion', function (Blueprint $table) {
             $table->id();
-            $table->foreign('id_pregunta_puntuacion')->constrained('pregunta_puntuacion')->onDelete('cascade');
+            $table->foreignId('id_pregunta_puntuacion')->constrained('pregunta_puntuacion')->onDelete('cascade');
             $table->integer('respuesta_puntuacion');
-            $table->foreign('id_grupo_evaluacion')->constrained('grupo_evaluacion')->onDelete('cascade');
+            $table->foreignId('id_grupo_evaluacion')->constrained('grupo_evaluacion')->onDelete('cascade');
             $table->timestamps();
         });
     }

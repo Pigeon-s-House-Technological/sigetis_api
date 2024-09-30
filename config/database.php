@@ -90,20 +90,6 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
-
-        'railway' => [
-            'driver' => 'pgsql',
-            'host' => env('DB_HOST', 'postgres.railway.internal'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'railway'),
-            'username' => env('DB_USERNAME', 'postgres'),
-            'password' => env('DB_PASSWORD', 'EZzwHHqdgsuIkmsmceFgZDUXtXgvJBOb'),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'schema' => 'public',
-            'sslmode' => 'prefer',
-        ],
-
     ],
 
     'migrations' => 'migrations',

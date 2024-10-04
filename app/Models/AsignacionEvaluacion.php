@@ -15,7 +15,9 @@ class AsignacionEvaluacion extends Model
         'id_evaluacion',
         'id_grupo',
         'id_usuario',
-        'estado_evaluacion'
+        'estado_evaluacion',
+        'id_grupo_aux',
+        'id_usuario_aux'
     ];
 
     public function evaluacion()
@@ -31,6 +33,14 @@ class AsignacionEvaluacion extends Model
     public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'id_usuario');
+    }
+    public function grupoAux()
+    {
+        return $this->belongsTo(Grupo::class, 'id_grupo_aux');
+    }
+    public function usuarioAux()
+    {
+        return $this->belongsTo(Usuario::class, 'id_usuario_aux');
     }
 
 

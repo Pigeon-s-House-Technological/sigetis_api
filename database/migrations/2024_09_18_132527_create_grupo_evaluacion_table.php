@@ -18,6 +18,8 @@ class CreateGrupoEvaluacionTable extends Migration
             $table->foreignId('id_evaluacion')->constrained('evaluacion')->onDelete('cascade');
             $table->foreignId('id_grupo')->nullable()->constrained('grupo')->onDelete('cascade');
             $table->foreignId('id_usuario')->nullable()->constrained('usuario')->onDelete('cascade');
+            $table->foreignId('id_grupo_aux')->nullable()->constrained('grupo')->onDelete('cascade');
+            $table->foreignId('id_usuario_aux')->nullable()->constrained('usuario')->onDelete('cascade');
             $table->boolean('estado_evaluacion');
             $table->timestamps();
         });

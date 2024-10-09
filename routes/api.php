@@ -40,7 +40,7 @@ Route::apiResource('asignaciones', AsignacionEvaluacionController::class);
 Route::apiResource('opcionesPreguntaMultiple', OpcionPreguntaMultipleController::class);
 Route::apiResource('respuestasComplemento', RespuestaComplementoController::class);
 Route::apiResource('respuestasOpcionMultiple', RespuestaOpcionMultipleController::class);
-Route::apiResource('gruposEvaluaciones', Usuario_grupoController::class);
+Route::apiResource('gruposUsuarios', Usuario_grupoController::class);
 
 
 // Rutas personalizadas

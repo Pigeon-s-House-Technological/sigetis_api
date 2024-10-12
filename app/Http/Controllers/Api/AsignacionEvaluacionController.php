@@ -29,7 +29,9 @@ class AsignacionEvaluacionController extends Controller
             'id_evaluacion' => 'required',
             'id_grupo' => '',
             'id_usuario' => '',
-            'estado_evaluacion' => 'required'
+            'estado_evaluacion' => 'required',
+            'id_grupo_aux' => '',
+            'id_grupo_aux' => ''
         ]);
 
         if($validator->fails()){
@@ -45,7 +47,9 @@ class AsignacionEvaluacionController extends Controller
             'id_evaluacion' => $request->id_evaluacion,
             'id_grupo' => $request->id_grupo,
             'id_usuario' => $request->id_usuario,
-            'estado_evaluacion' => $request->estado_evaluacion
+            'estado_evaluacion' => $request->estado_evaluacion,
+            'id_grupo_aux' => $request->id_grupo_aux,
+            'id_usuario_aux' => $request->id_usuario_aux
         ]);
         if (!$asignar){
             $data = [
@@ -105,7 +109,9 @@ class AsignacionEvaluacionController extends Controller
             'id_evaluacion' => '',
             'id_grupo' => '',
             'id_usuario' => '',
-            'estado_evaluacion' => ''
+            'estado_evaluacion' => '',
+            'id_grupo_aux' => '',
+            'id_usuario_aux' => ''
         ]);
 
         if($validator->fails()){
@@ -128,6 +134,12 @@ class AsignacionEvaluacionController extends Controller
         }
         if ($request->estado_evaluacion != null) {
             $asignar->estado_evaluacion = $request->estado_evaluacion;
+        }
+        if ($request->id_grupo_aux != null) {
+            $asignar->id_grupo_aux = $request->id_grupo_aux;
+        }
+        if ($request->id_usuario_aux != null) {
+            $asignar->id_usuario_aux = $request->id_usuario_aux;
         }
 
         $asignar->save();

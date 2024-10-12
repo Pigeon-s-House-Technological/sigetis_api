@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Evaluacion;
 use App\Models\AsignacionEvaluacion;
 
-class estadis_evalucionController extends Controller{
+class estadis_evaluacionController extends Controller{
 
     public function tipo_evaluacion(){
         $autoevaluaciones = Evaluacion::where('tipo_evaluacion', 1)->get();

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 use App\Models\Usuario_Grupo;
 
 class Usuario_grupoController extends Controller
@@ -152,3 +151,4 @@ class Usuario_grupoController extends Controller
         ], 200);
     }
 }
+

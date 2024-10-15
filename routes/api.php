@@ -19,7 +19,8 @@ use App\Http\Controllers\Api\AsignacionEvaluacionController;
 use App\Http\Controllers\Api\OpcionPreguntaMultipleController;
 use App\Http\Controllers\Api\RespuestaComplementoController;
 use App\Http\Controllers\Api\RespuestaOpcionMultipleController;
-
+use App\Http\Controllers\Api\RegistroController;
+use App\Http\Controllers\Api\LoginController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -63,3 +64,6 @@ Route::patch('/respuestasOpcionMultipleP/{id}', [RespuestaOpcionMultipleControll
 Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);//1->auto,2->cruzada,3->pares
 Route::get('/evaluaciones/estado-individual', [estadis_evaluacionController::class, 'contador_estados_por_usuario']);
 Route::get('/evaluaciones/tipo', [estadis_evaluacionController::class, 'tipo_evaluacion']);
+
+Route::get('/register', [RegistroController::class, 'register']);
+Route::get('/login', [LoginController::class, 'registro']);

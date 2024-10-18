@@ -70,7 +70,7 @@ class AuthController extends Controller
                 'success' => true,
                 'status' => 200
             ];
-            return response()->json($data, 200)->withoutCookie($cookie);
+            return response()->json($data, 200)->withCookie($cookie);
         }else{
             $data = [
                 'message' => 'Credenciales no validas',
@@ -81,13 +81,19 @@ class AuthController extends Controller
         }
     }
 
-    public function userProfile(Request $request){
-        return response()->json(
-            [
-                'message' => 'Usuario autenticado',
-                'userData' => auth()->user(),
+    public function userProfile(Request $request)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'message' => 'No autenticado',
+            ], 401);
+        }
 
-            ], 200);
+        return response()->json([
+            'message' => 'Usuario autenticado',
+            'userData' => $user,
+        ], 200);
     }
 
     public function logout(Request $request){

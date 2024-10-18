@@ -21,6 +21,11 @@ use App\Http\Controllers\Api\RespuestaComplementoController;
 use App\Http\Controllers\Api\RespuestaOpcionMultipleController;
 use App\Http\Controllers\Api\RegistroController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\Usuario_grupoController;
+use App\Http\Controllers\Api\Datos_actividadesController;
+
+Route::get('/reporte/grupo/{id_grupo}', [Datos_actividadesController::class, 'obtenerDatosPorGrupo']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -41,7 +46,7 @@ Route::apiResource('asignaciones', AsignacionEvaluacionController::class);
 Route::apiResource('opcionesPreguntaMultiple', OpcionPreguntaMultipleController::class);
 Route::apiResource('respuestasComplemento', RespuestaComplementoController::class);
 Route::apiResource('respuestasOpcionMultiple', RespuestaOpcionMultipleController::class);
-Route::apiResource('gruposUsuarios', Usuario_grupoController::class);
+Route::get('/gruposUsuarios', [Usuario_grupoController::class, 'index']);
 
 
 // Rutas personalizadas
@@ -65,5 +70,15 @@ Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, '
 Route::get('/evaluaciones/estado-individual', [estadis_evaluacionController::class, 'contador_estados_por_usuario']);
 Route::get('/evaluaciones/tipo', [estadis_evaluacionController::class, 'tipo_evaluacion']);
 
-Route::get('/register', [RegistroController::class, 'register']);
-Route::get('/login', [LoginController::class, 'registro']);
+Route::post('/register', [RegistroController::class, 'register']);
+
+Route::post('/registrar', [LoginController::class, 'registro']);
+Route::get('/registrar', [LoginController::class, 'index']);
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login2', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::get('user-profile', [LoginController::class, 'userProfile']);
+    Route::post('logout', [LoginController::class, 'logout']);
+});

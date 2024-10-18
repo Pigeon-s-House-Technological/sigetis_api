@@ -19,6 +19,7 @@ class Grupo extends Model
     protected $fillable = [
         'nombre_grupo',
         'descripcion_grupo',
+        'cantidad_integ',
         'id_tutor',
         'id_jefe_grupo'
     ];

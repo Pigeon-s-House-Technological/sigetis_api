@@ -8,7 +8,7 @@ use App\Models\Grupo;
 use Illuminate\Support\Facades\Validator;
 
 
-class grupoController extends Controller
+class GrupoController extends Controller
 {
     public function index(){
         $grupo = Grupo::all();
@@ -26,6 +26,7 @@ class grupoController extends Controller
         $validator = Validator::make($request->all(), [
             'nombre_grupo' => 'required',
             'descripcion_grupo' => 'required',
+            'cantidad_integ' => 'required|integer',
             'id_tutor' => 'required',
             'id_jefe_grupo' => 'required'
         ]);
@@ -41,6 +42,7 @@ class grupoController extends Controller
         $grupo = Grupo::create([
             'nombre_grupo' => $request->nombre_grupo,
             'descripcion_grupo' => $request->descripcion_grupo,
+            'cantidad_integ' => $request->cantidad_integ,
             'id_tutor' => $request->id_tutor,
             'id_jefe_grupo' => $request->id_jefe_grupo
         ]);
@@ -106,9 +108,9 @@ class grupoController extends Controller
         $grupo->update([
             'nombre_grupo' => $request->nombre_grupo,
             'descripcion_grupo' => $request->descripcion_grupo,
+            'cantidad_integ' => $request->cantidad_integ,
             'id_tutor' => $request->id_tutor,
             'id_jefe_grupo' => $request->id_jefe_grupo
-
         ]);
         $data = [
             'message' => 'Grupo actualizado',
@@ -129,6 +131,7 @@ class grupoController extends Controller
         $validator = Validator::make($request->all(), [
             'nombre_grupo' => 'required_without_all:descripcion_grupo,id_tutor,id_jefe_grupo',
             'descripcion_grupo' => 'required_without_all:nombre_grupo,id_tutor,id_jefe_grupo',
+            'cantidad_integ' => 'required_without_all:nombre_grupo,descripcion_grupo,id_tutor,id_jefe_grupo',
             'id_tutor' => 'required_without_all:nombre_grupo,descripcion_grupo,id_jefe_grupo',
             'id_jefe_grupo' => 'required_without_all:nombre_grupo,descripcion_grupo,id_tutor'
         ]);
@@ -147,6 +150,9 @@ class grupoController extends Controller
         }
         if($request->has('descripcion_grupo')){
             $grupo->descripcion_grupo = $request->descripcion_grupo;
+        }
+        if ($request->has('cantidad_integ')) {
+            $grupo->cantidad_integ = $request->cantidad_integ;
         }
         if($request->has('id_tutor')){
             $grupo->id_tutor = $request->id_tutor;

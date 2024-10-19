@@ -26,4 +26,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function grupos()
+    {
+        return $this->belongsToMany(Grupo::class, 'usuario_grupo', 'id_usuario', 'id_grupo');
+    }
+
+    public function asignacionEvaluacion()
+    {
+        return $this->hasMany(AsignacionEvaluacion::class, 'id_usuario');
+    }
 }

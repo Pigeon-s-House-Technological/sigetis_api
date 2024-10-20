@@ -49,5 +49,5 @@ class Gruposeeder extends Seeder
         $grupo4->id_jefe_grupo = 8;   
         $grupo4->save();
 
-        
+    }   
 }

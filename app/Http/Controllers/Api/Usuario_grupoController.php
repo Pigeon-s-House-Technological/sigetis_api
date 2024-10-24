@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Usuario_Grupo;
+use App\Models\User;
+use App\Models\Grupo;
 
 class Usuario_grupoController extends Controller
 {
     public function index(){
-        $usuario_grupo = Usuario_grupo::all();
-        if($usuario_grupo->isEmpty()){
+
+
+        $usuarios = User::with('grupos')->get();
+
+        if ($usuarios->isEmpty()) {
             $data = [
                 'message' => 'No hay usuarios registrados',
                 'status' => 200
@@ -23,42 +27,54 @@ class Usuario_grupoController extends Controller
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'id_usuario' => '',
-            'id_grupo' => ''
+            'id_usuario' => 'required|exists:users,id',
+            'id_grupo' => 'required|exists:grupo,id',
         ]);
-
+    
         if($validator->fails()){
             $data = [
                 'message' => 'Error en la validacion de los datos',
                 'errors' => $validator->errors(),
+                'user' => $request->all(),
                 'status' => 400
             ];
             return response()->json($data, 400);
         }
-        $usuario_grupo = Usuario_grupo::create([
-            'id_usuario' => $request->id_usuario,
-            'id_grupo' => $request->id_grupo
-        ]);
-
-        if(!$usuario_grupo){
+    
+        $usuario = User::find($request->id_usuario);
+        if (!$usuario) {
             $data = [
-                'message' => 'Error al crear el usuario',
-                'status' => 500
+                'message' => 'Usuario no encontrado',
+                'user'=> $request->id_usuario,
+                'status' => 404
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 404);
         }
+    
+        $grupo = Grupo::find($request->id_grupo);
+        if (!$grupo) {
+            $data = [
+                'message' => 'Grupo no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+    
+        $usuario->grupos()->attach($request->id_grupo);
+    
 
         $data = [
             'usuario' => $usuario_grupo,
             'status' => 201
         ];
-
+    
         return response()->json($data, 201);
     }
 
-    public function show($id){
-        $usuario = Usuario::find($id);
-        if(!$usuario){
+    public function show($id)
+    {
+        $usuario = User::with('grupos')->find($id);
+        if (!$usuario) {
             $data = [
                 'message' => 'Usuario no encontrado',
                 'status' => 404
@@ -72,9 +88,11 @@ class Usuario_grupoController extends Controller
         return response()->json($data, 200);
     }
 
-    public function destroy($id){
-        $usuario_grupo = Usuario_grupo::find($id);
-        if(!$usuario_grupo){
+    public function destroy($id_usuario, $id_grupo)
+    {
+        $usuario = User::find($id_usuario);
+        if (!$usuario) {
+
             $data = [
                 'message' => 'Usuario no encontrado',
                 'status' => 404

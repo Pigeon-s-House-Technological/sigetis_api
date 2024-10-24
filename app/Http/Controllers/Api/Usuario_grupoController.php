@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Usuario;
+use App\Models\User;
 use App\Models\Grupo;
 
 class Usuario_grupoController extends Controller
 {
     public function index(){
 
-        $usuarios = Usuario::with('grupos')->get();
+        $usuarios = User::with('grupos')->get();
 
         if ($usuarios->isEmpty()) {
             $data = [
@@ -26,34 +26,53 @@ class Usuario_grupoController extends Controller
     }
 
     public function store(Request $request){
-
         $validator = Validator::make($request->all(), [
-            'id_usuario' => 'required|exists:usuario,id',
+            'id_usuario' => 'required|exists:users,id',
             'id_grupo' => 'required|exists:grupo,id',
         ]);
-
+    
         if($validator->fails()){
             $data = [
                 'message' => 'Error en la validacion de los datos',
                 'errors' => $validator->errors(),
+                'user' => $request->all(),
                 'status' => 400
             ];
             return response()->json($data, 400);
         }
-        $usuario = Usuario::find($request->id_usuario);
+    
+        $usuario = User::find($request->id_usuario);
+        if (!$usuario) {
+            $data = [
+                'message' => 'Usuario no encontrado',
+                'user'=> $request->id_usuario,
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+    
+        $grupo = Grupo::find($request->id_grupo);
+        if (!$grupo) {
+            $data = [
+                'message' => 'Grupo no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+    
         $usuario->grupos()->attach($request->id_grupo);
-
+    
         $data = [
             'usuario' => $usuario,
             'status' => 201
         ];
-
+    
         return response()->json($data, 201);
     }
 
     public function show($id)
     {
-        $usuario = Usuario::with('grupos')->find($id);
+        $usuario = User::with('grupos')->find($id);
         if (!$usuario) {
             $data = [
                 'message' => 'Usuario no encontrado',
@@ -70,7 +89,7 @@ class Usuario_grupoController extends Controller
 
     public function destroy($id_usuario, $id_grupo)
     {
-        $usuario = Usuario::find($id_usuario);
+        $usuario = User::find($id_usuario);
         if (!$usuario) {
             $data = [
                 'message' => 'Usuario no encontrado',

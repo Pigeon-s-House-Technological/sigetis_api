@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\RegistroController;
 use App\Http\Controllers\Api\Usuario_grupoController;
 use App\Http\Controllers\Api\Datos_actividadesController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CreargruposController;
 
 
 //rutas predefeinidas ya traen el index, store, destroy, show, update
@@ -68,6 +69,7 @@ Route::get('/gruposUsuarios/{id}', [Usuario_grupoController::class, 'show']);
 Route::patch('/gruposUsuarios/{id}', [Usuario_grupoController::class, 'update']);
 Route::delete('/gruposUsuarios/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'destroy']);
 Route::get('/reporte/grupo/{id_grupo}', [Datos_actividadesController::class, 'obtenerDatosPorGrupo']);
+Route::get('usuarios-aleatorios/{cantidad}', [CreargruposController::class, 'mostrarUsuariosAlAzar']);
 
 Route::controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');

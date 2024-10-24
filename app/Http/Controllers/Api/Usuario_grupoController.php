@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,6 +12,7 @@ class Usuario_grupoController extends Controller
 {
     public function index(){
 
+
         $usuarios = User::with('grupos')->get();
 
         if ($usuarios->isEmpty()) {
@@ -21,8 +22,7 @@ class Usuario_grupoController extends Controller
             ];
             return response()->json($data, 404);
         }
-
-        return response()->json($usuarios, 200);
+        return response()->json($usuario_grupo, 200);
     }
 
     public function store(Request $request){
@@ -62,8 +62,9 @@ class Usuario_grupoController extends Controller
     
         $usuario->grupos()->attach($request->id_grupo);
     
+
         $data = [
-            'usuario' => $usuario,
+            'usuario' => $usuario_grupo,
             'status' => 201
         ];
     
@@ -91,31 +92,81 @@ class Usuario_grupoController extends Controller
     {
         $usuario = User::find($id_usuario);
         if (!$usuario) {
+
             $data = [
                 'message' => 'Usuario no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
+        $usuario_grupo->delete();
+        $data = [
+            'message' => 'Usuario eliminado',
+            'status' => 200
+        ];
+        return response()->json($data, 200);
+    }
 
-        $grupo = Grupo::find($id_grupo);
-        if (!$grupo) {
+    public function update(Request $request, $id){
+        $usuario_grupo = Usuario_grupo::find($id);
+        if(!$usuario){
             $data = [
-                'message' => 'Grupo no encontrado',
+                'message' => 'Usuario no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
-
-        $usuario->grupos()->detach($id_grupo);
-
+        $usuario->update([
+            'id_usuario' => $request->id_usuario,
+            'id_grupo' => $request->id_grupo
+        ]);
         $data = [
-            'message' => 'Relación usuario-grupo eliminada',
+            'message' => 'Usuario actualizado',
             'status' => 200
         ];
-
         return response()->json($data, 200);
     }
 
+    public function updatePartial(Request $request, $id){
+        // Buscar el usuario por ID
+        $usuario_grupo = Usuario_grupo::find($id);
+        if (!$usuario_grupo) {
+            return response()->json([
+                'message' => 'Usuario no encontrado',
+                'status' => 404
+            ], 404);
+        }
+
+        // Validar los datos de la solicitud
+        $validator = Validator::make($request->all(), [
+            'id_usuario' => 'nullable|integer',
+            'id_grupo' => 'nullable|integer'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error en la validación de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ], 400);
+        }
+
+        // Asignar los valores de la solicitud al objeto usuario si están presentes
+        if ($request->has('id_usuario')) {
+            $usuario_grupo->id_usuario = $request->input('id_usuario');
+        }
+        if ($request->has('id_grupo')) {
+            $usuario_grupo->id_grupo = $request->input('id_grupo');
+        }
+
+        // Guardar el objeto usuario en la base de datos
+        $usuario_grupo->save();
+
+        return response()->json([
+            'message' => 'Usuario actualizado correctamente',
+            'usuario' => $usuario_grupo,
+            'status' => 200
+        ], 200);
+    }
 }
 

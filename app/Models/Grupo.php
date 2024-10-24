@@ -25,17 +25,17 @@ class Grupo extends Model
 
     public function tutor()
     {
-        return $this->belongsTo(User::class, 'id_tutor');
+        return $this->belongsTo(Usuario::class, 'id_tutor');
     }
 
     public function jefeGrupo()
     {
-        return $this->belongsTo(User::class, 'id_jefe_grupo');
+        return $this->belongsTo(Usuario::class, 'id_jefe_grupo');
     }
 
     public function usuarios()
     {
-        return $this->belongsToMany(User::class, 'usuario_grupo', 'id_grupo', 'id_usuario');
+        return $this->belongsToMany(Usuario::class, 'usuario_grupo', 'id_grupo', 'id_usuario');
     }
 
     public function asignacionEvaluacion()

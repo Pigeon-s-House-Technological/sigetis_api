@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Usuario;
+use App\Models\User;
 
 class usuarioController extends Controller
 {
     public function index(){
-        $usuarios = Usuario::all();
+        $usuarios = User::all();
         if($usuarios->isEmpty()){
             $data = [
                 'message' => 'No hay usuarios registrados',
@@ -21,7 +21,7 @@ class usuarioController extends Controller
         }
         return response()->json($usuarios, 200);
     }
-
+    /*
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'nombre_user' => 'required',
@@ -164,6 +164,6 @@ class usuarioController extends Controller
             'usuario' => $usuario,
             'status' => 200
         ], 200);
-    }
+    }*/
 }
 

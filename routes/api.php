@@ -19,10 +19,11 @@ use App\Http\Controllers\Api\AsignacionEvaluacionController;
 use App\Http\Controllers\Api\OpcionPreguntaMultipleController;
 use App\Http\Controllers\Api\RespuestaComplementoController;
 use App\Http\Controllers\Api\RespuestaOpcionMultipleController;
+use App\Http\Controllers\Api\RegistroController;
+use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\Usuario_grupoController;
+use App\Http\Controllers\Api\AuthController;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 //rutas predefeinidas ya traen el index, store, destroy, show, update
 Route::apiResource('evaluaciones', EvaluacionController::class);
@@ -40,7 +41,7 @@ Route::apiResource('asignaciones', AsignacionEvaluacionController::class);
 Route::apiResource('opcionesPreguntaMultiple', OpcionPreguntaMultipleController::class);
 Route::apiResource('respuestasComplemento', RespuestaComplementoController::class);
 Route::apiResource('respuestasOpcionMultiple', RespuestaOpcionMultipleController::class);
-Route::apiResource('gruposUsuarios', Usuario_grupoController::class);
+Route::apiResource('respuestasPuntuacion', RespuestaPuntuacionController::class);
 
 
 // Rutas personalizadas
@@ -63,3 +64,18 @@ Route::patch('/respuestasOpcionMultipleP/{id}', [RespuestaOpcionMultipleControll
 Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);//1->auto,2->cruzada,3->pares
 Route::get('/evaluaciones/estado-individual', [estadis_evaluacionController::class, 'contador_estados_por_usuario']);
 Route::get('/evaluaciones/tipo', [estadis_evaluacionController::class, 'tipo_evaluacion']);
+Route::get('/gruposUsuarios', [Usuario_grupoController::class, 'index']);
+Route::post('/gruposUsuarios', [Usuario_grupoController::class, 'store']);
+Route::get('/gruposUsuarios/{id}', [Usuario_grupoController::class, 'show']);
+Route::patch('/gruposUsuarios/{id}', [Usuario_grupoController::class, 'update']);
+Route::delete('/gruposUsuarios/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'destroy']);
+
+
+Route::controller(AuthController::class)->group(function(){
+    Route::post('/register', 'register');
+    Route::post('/login', 'login');
+    Route::group(['middleware' => 'auth:sanctum'], function(){
+        Route::post('/logout', 'logout');
+        Route::get('/user-profile', 'userProfile');
+    });
+});

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Historia_usuario;
-use App\Models\Usuario;
+use App\Models\User;
 
 class Actividad extends Model
 {
@@ -38,11 +38,11 @@ class Actividad extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'id_usuario');
+        return $this->belongsTo(User::class, 'id_usuario');
     }
 
     public function encargado()
     {
-        return $this->belongsTo(Usuario::class, 'encargado');
+        return $this->belongsTo(User::class, 'encargado');
     }
 }

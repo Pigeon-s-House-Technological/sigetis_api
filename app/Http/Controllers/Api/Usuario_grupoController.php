@@ -117,4 +117,32 @@ class Usuario_grupoController extends Controller
         return response()->json($data, 200);
     }
 
+    public function integrantes($id_grupo)
+    {
+        $grupo = Grupo::with('usuarios')->find($id_grupo);
+        if (!$grupo) {
+            $data = [
+                'message' => 'Grupo no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Extraer solo los nombres y los IDs de los usuarios
+        $integrantes = $grupo->usuarios->filter(function($usuario) {
+            return $usuario->tipo_usuario != 1;
+        })->map(function($usuario) {
+            return [
+                'id' => $usuario->id,
+                'nombre' => $usuario->nombre
+            ];
+        });;
+
+        $data = [
+            'integrantes' => $integrantes,
+            'status' => 200
+        ];
+        return response()->json($data, 200);
+    }
+
 }

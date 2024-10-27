@@ -83,11 +83,14 @@ class Datos_actividadesController extends Controller
                            'titulo_hu' => $historia->titulo_hu,
                            'actividades' => $actividades->map(function ($actividad) {
                                 $usuario = User::find($actividad->encargado);
-                                $nombreUsuario = $usuario ? $usuario->nombre_user : 'Sin asignar';
+                                $nombreUsuario = $usuario ? $usuario->nombre : 'Sin asignar';
                                 return [
+                                    'id'=> $actividad->id,
                                     'actividad' => $actividad->nombre_actividad,
                                     'encargado' => $nombreUsuario,
                                     'estado_actividad' => $actividad ? $actividad->estado_actividad : 'Sin asignar',
+                                    'fecha_inicio' => $actividad->fecha_inicio,
+                                    'fecha_fin' => $actividad->fecha_fin,
                                 ];
                             }),
                        ];

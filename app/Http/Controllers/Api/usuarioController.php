@@ -21,6 +21,22 @@ class usuarioController extends Controller
         }
         return response()->json($usuarios, 200);
     }
+
+    public function show($id){
+        $usuario = User::find($id);
+        if(!$usuario){
+            $data = [
+                'message' => 'Usuario no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+        $data = [
+            'usuario' => $usuario,
+            'status' => 200
+        ];
+        return response()->json($data, 200);
+    }
     /*
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
@@ -61,21 +77,7 @@ class usuarioController extends Controller
         return response()->json($data, 201);
     }
 
-    public function show($id){
-        $usuario = Usuario::find($id);
-        if(!$usuario){
-            $data = [
-                'message' => 'Usuario no encontrado',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
-        $data = [
-            'usuario' => $usuario,
-            'status' => 200
-        ];
-        return response()->json($data, 200);
-    }
+    
 
     public function destroy($id){
         $usuario = Usuario::find($id);

@@ -24,7 +24,8 @@ use App\Http\Controllers\Api\Usuario_grupoController;
 use App\Http\Controllers\Api\Datos_actividadesController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CreargruposController;
-
+use App\Http\Controllers\Api\CreargrupoController;
+use App\Http\Controllers\Api\AsignacionPorParesController;
 
 //rutas predefeinidas ya traen el index, store, destroy, show, update
 Route::apiResource('evaluaciones', EvaluacionController::class);
@@ -71,6 +72,8 @@ Route::get('/gruposUsuarios/integrantes/{id_grupo}', [Usuario_grupoController::c
 Route::delete('/gruposUsuarios/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'destroy']);
 Route::get('/reporte/grupo/{id_grupo}', [Datos_actividadesController::class, 'obtenerDatosPorGrupo']);
 Route::get('usuarios-aleatorios/{cantidad}', [CreargruposController::class, 'mostrarUsuariosAlAzar']);
+Route::get('/usuarios-grupo/{id_grupo}', [CreargrupoController::class, 'mostrarUsuariosPorGrupo']);
+Route::get('/pares/{id_grupo}', [AsignacionPorParesController::class, 'asignarUsuarios']);
 
 Route::controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+
 use App\Models\User;
 use App\Models\Grupo;
 
@@ -145,4 +148,61 @@ class Usuario_grupoController extends Controller
         return response()->json($data, 200);
     }
 
+    public function asignarUsuariosGrupo($cantidad, $id_grupo)
+    {
+        $grupo = Grupo::find($id_grupo);
+        if (!$grupo) {
+            return response()->json([
+                'message' => 'Grupo no encontrado',
+                'status' => 404
+            ], 404);
+        }
+
+        $usuariosCreados = [];
+
+        for ($i = 0; $i < $cantidad; $i++) {
+            $username = 'user_' . Str::random(10);
+            $password = Str::random(15);
+            $tipo_usuario = 3;
+
+            if($i==0){
+                $usuario = User::create([
+                    'nombre' => $username,
+                    'apellido' => 'Apellido Jefe',
+                    'usuario' => $username,
+                    'correo' => $username . '@gmail.com', // Asegúrate de que el email sea único
+                    'password' => Hash::make($password),
+                    'password_confirmation' => Hash::make($password),
+                    'tipo_usuario' => 2 // Asumiendo que tipo_usuario 2 es el tipo deseado
+                ]);
+                $tipo_usuario = 2;
+            }else{
+                $usuario = User::create([
+                    'nombre' => $username,
+                    'apellido' => 'Apellido',
+                    'usuario' => $username,
+                    'correo' => $username . '@gmail.com', // Asegúrate de que el email sea único
+                    'password' => Hash::make($password),
+                    'password_confirmation' => Hash::make($password),
+                    'tipo_usuario' => 3 // Asumiendo que tipo_usuario 2 es el tipo deseado
+                ]);
+            }
+
+            // Asignar el usuario al grupo
+            $grupo->usuarios()->attach($usuario->id);
+
+            // Agregar el usuario creado al array de respuesta
+            $usuariosCreados[] = [
+                'usuario' => $username,
+                'contraseña' => $password,
+                'tipo_usuario' => $tipo_usuario
+            ];
+        }
+
+        return response()->json([
+            'message' => 'Usuarios creados y asignados al grupo',
+            'usuarios' => $usuariosCreados,
+            'status' => 201
+        ], 201);
+    }
 }

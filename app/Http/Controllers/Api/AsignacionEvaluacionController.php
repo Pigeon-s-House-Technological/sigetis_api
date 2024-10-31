@@ -31,7 +31,7 @@ class AsignacionEvaluacionController extends Controller
             'id_usuario' => '',
             'estado_evaluacion' => 'required',
             'id_grupo_aux' => '',
-            'id_grupo_aux' => ''
+            'id_usuario_aux' => ''
         ]);
 
         if($validator->fails()){

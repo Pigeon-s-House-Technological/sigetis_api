@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use App\Models\Usuario;
+use App\Models\User;
 
 class usuarioController extends Controller
 {
     public function index(){
-        $usuarios = Usuario::all();
+        $usuarios = User::all();
         if($usuarios->isEmpty()){
             $data = [
                 'message' => 'No hay usuarios registrados',
@@ -22,6 +22,22 @@ class usuarioController extends Controller
         return response()->json($usuarios, 200);
     }
 
+    public function show($id){
+        $usuario = User::find($id);
+        if(!$usuario){
+            $data = [
+                'message' => 'Usuario no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+        $data = [
+            'usuario' => $usuario,
+            'status' => 200
+        ];
+        return response()->json($data, 200);
+    }
+    /*
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'nombre_user' => 'required',
@@ -61,21 +77,7 @@ class usuarioController extends Controller
         return response()->json($data, 201);
     }
 
-    public function show($id){
-        $usuario = Usuario::find($id);
-        if(!$usuario){
-            $data = [
-                'message' => 'Usuario no encontrado',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
-        $data = [
-            'usuario' => $usuario,
-            'status' => 200
-        ];
-        return response()->json($data, 200);
-    }
+    
 
     public function destroy($id){
         $usuario = Usuario::find($id);
@@ -164,6 +166,6 @@ class usuarioController extends Controller
             'usuario' => $usuario,
             'status' => 200
         ], 200);
-    }
+    }*/
 }
 

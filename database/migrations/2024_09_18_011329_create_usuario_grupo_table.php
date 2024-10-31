@@ -15,7 +15,7 @@ class CreateUsuarioGrupoTable extends Migration
     {
         Schema::create('usuario_grupo', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('usuario')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
             $table->foreignId('id_grupo')->constrained('grupo')->onDelete('cascade');
             $table->timestamps();
         });

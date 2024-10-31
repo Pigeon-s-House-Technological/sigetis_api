@@ -29,7 +29,9 @@ class AsignacionEvaluacionController extends Controller
             'id_evaluacion' => 'required',
             'id_grupo' => '',
             'id_usuario' => '',
-            'estado_evaluacion' => 'required'
+            'estado_evaluacion' => 'required',
+            'id_grupo_aux' => '',
+            'id_grupo_aux' => ''
         ]);
 
         if($validator->fails()){
@@ -45,7 +47,9 @@ class AsignacionEvaluacionController extends Controller
             'id_evaluacion' => $request->id_evaluacion,
             'id_grupo' => $request->id_grupo,
             'id_usuario' => $request->id_usuario,
-            'estado_evaluacion' => $request->estado_evaluacion
+            'estado_evaluacion' => $request->estado_evaluacion,
+            'id_grupo_aux' => $request->id_grupo_aux,
+            'id_usuario_aux' => $request->id_usuario_aux
         ]);
         if (!$asignar){
             $data = [
@@ -105,7 +109,9 @@ class AsignacionEvaluacionController extends Controller
             'id_evaluacion' => '',
             'id_grupo' => '',
             'id_usuario' => '',
-            'estado_evaluacion' => ''
+            'estado_evaluacion' => '',
+            'id_grupo_aux' => '',
+            'id_usuario_aux' => ''
         ]);
 
         if($validator->fails()){
@@ -129,6 +135,12 @@ class AsignacionEvaluacionController extends Controller
         if ($request->estado_evaluacion != null) {
             $asignar->estado_evaluacion = $request->estado_evaluacion;
         }
+        if ($request->id_grupo_aux != null) {
+            $asignar->id_grupo_aux = $request->id_grupo_aux;
+        }
+        if ($request->id_usuario_aux != null) {
+            $asignar->id_usuario_aux = $request->id_usuario_aux;
+        }
 
         $asignar->save();
         $data = [
@@ -138,5 +150,59 @@ class AsignacionEvaluacionController extends Controller
         ];
 
         return response()->json($data, 200);
+    }
+
+    public function mostrarDatos($idGrupo){
+        $asignar = AsignacionEvaluacion::where('id_grupo', $idGrupo)->get();
+        if ($asignar->isEmpty()) {
+            $data = [
+                'message' => 'No se encontraron asignaciones',
+                'status' => 200
+            ];
+            return response()->json($data, 200);
+        }
+
+        
+
+        $asignacionesConDatos = $asignar->map(function($asignacion) {
+            $destinatario = "Individual";
+            if($asignacion->evaluacion->tipo_destinatario == true){
+                $destinatario = "Grupal";
+            }
+
+            $tipo = "Autoevaluación";
+            if($asignacion->evaluacion->tipo_evaluacion == 2){
+                $tipo = "Evaluación cruzada";
+            }else if($asignacion->evaluacion->tipo_evaluacion == 3){
+                $tipo = "Evaluación por pares";
+            }
+
+            $nombreEstudiante = $asignacion->usuario ? $asignacion->usuario->nombre : 'N/A';
+            $nombreGrupo = $asignacion->grupo ? $asignacion->grupo->nombre_grupo : 'N/A';
+            $nombreEstudianteAux = $asignacion->usuarioAux ? $asignacion->usuarioAux->nombre : 'N/A';
+            $nombreGrupoAux = $asignacion->grupoAux ? $asignacion->grupoAux->nombre_grupo : 'N/A';
+            $estado = $asignacion->estado_evaluacion == true ? 'Realizada' : 'Pendiente';
+
+            return [
+                'id' => $asignacion->id,
+                'id_evaluacion' => $asignacion->id_evaluacion,
+                'estado_evaluacion' => $estado,
+                'nombre_evaluacion' => $asignacion->evaluacion->nombre_evaluacion,
+                'nombre_estudiante' => $nombreEstudiante,
+                'nombre_grupo' => $nombreGrupo,
+                'nombre_estudiante_aux' => $nombreEstudianteAux,
+                'nombre_grupo_aux' => $nombreGrupoAux,
+                'tipo_evaluacion' => $tipo,
+                'tipo_destinatario' => $destinatario,
+            ];
+        });
+    
+        $data = [
+            'message' => 'Asignaciones encontradas',
+            'asignaciones' => $asignacionesConDatos,
+            'status' => 200
+        ];
+        return response()->json($data, 200);
+        
     }
 }

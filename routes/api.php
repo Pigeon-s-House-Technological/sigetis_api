@@ -75,6 +75,7 @@ Route::delete('/gruposUsuarios/{id_usuario}/{id_grupo}', [Usuario_grupoControlle
 Route::get('/reporte/grupo/{id_grupo}', [Datos_actividadesController::class, 'obtenerDatosPorGrupo']);
 Route::get('/pares/{id_grupo}', [AsignacionPorParesController::class, 'asignarUsuarios']);
 Route::get('/crearGrupo/{cantidad}/{id_grupo}', [Usuario_grupoController::class, 'asignarUsuariosGrupo']);
+Route::get('/planilla-evaluacion-datos/{idGrupo}', [AsignacionEvaluacionController::class, 'mostrarDatos']); 
 
 Route::controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');

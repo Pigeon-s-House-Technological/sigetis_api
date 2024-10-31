@@ -151,4 +151,58 @@ class AsignacionEvaluacionController extends Controller
 
         return response()->json($data, 200);
     }
+
+    public function mostrarDatos($idGrupo){
+        $asignar = AsignacionEvaluacion::where('id_grupo', $idGrupo)->get();
+        if ($asignar->isEmpty()) {
+            $data = [
+                'message' => 'No se encontraron asignaciones',
+                'status' => 200
+            ];
+            return response()->json($data, 200);
+        }
+
+        
+
+        $asignacionesConDatos = $asignar->map(function($asignacion) {
+            $destinatario = "Individual";
+            if($asignacion->evaluacion->tipo_destinatario == true){
+                $destinatario = "Grupal";
+            }
+
+            $tipo = "Autoevaluación";
+            if($asignacion->evaluacion->tipo_evaluacion == 2){
+                $tipo = "Evaluación cruzada";
+            }else if($asignacion->evaluacion->tipo_evaluacion == 3){
+                $tipo = "Evaluación por pares";
+            }
+
+            $nombreEstudiante = $asignacion->usuario ? $asignacion->usuario->nombre : 'N/A';
+            $nombreGrupo = $asignacion->grupo ? $asignacion->grupo->nombre_grupo : 'N/A';
+            $nombreEstudianteAux = $asignacion->usuarioAux ? $asignacion->usuarioAux->nombre : 'N/A';
+            $nombreGrupoAux = $asignacion->grupoAux ? $asignacion->grupoAux->nombre_grupo : 'N/A';
+            $estado = $asignacion->estado_evaluacion == true ? 'Realizada' : 'Pendiente';
+
+            return [
+                'id' => $asignacion->id,
+                'id_evaluacion' => $asignacion->id_evaluacion,
+                'estado_evaluacion' => $estado,
+                'nombre_evaluacion' => $asignacion->evaluacion->nombre_evaluacion,
+                'nombre_estudiante' => $nombreEstudiante,
+                'nombre_grupo' => $nombreGrupo,
+                'nombre_estudiante_aux' => $nombreEstudianteAux,
+                'nombre_grupo_aux' => $nombreGrupoAux,
+                'tipo_evaluacion' => $tipo,
+                'tipo_destinatario' => $destinatario,
+            ];
+        });
+    
+        $data = [
+            'message' => 'Asignaciones encontradas',
+            'asignaciones' => $asignacionesConDatos,
+            'status' => 200
+        ];
+        return response()->json($data, 200);
+        
+    }
 }

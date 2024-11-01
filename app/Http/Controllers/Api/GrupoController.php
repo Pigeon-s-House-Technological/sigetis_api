@@ -8,7 +8,7 @@ use App\Models\Grupo;
 use Illuminate\Support\Facades\Validator;
 
 
-class grupoController extends Controller
+class GrupoController extends Controller
 {
     public function index(){
         $grupo = Grupo::all();

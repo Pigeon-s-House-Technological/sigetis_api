@@ -135,7 +135,7 @@ class Usuarioseeder extends Seeder
         $user14->nombre = "Eduardo";
         $user14->apellido = "Caberos Flores";
         $user14->correo = "Eduardof2441@gmail.com";
-        $user14->tipo_usuario = 2;
+        $user14->tipo_usuario = 3;
         $user14->usuario = "Eduardito";
         $user14->password = "12345e";
         $user14->save();
@@ -144,7 +144,7 @@ class Usuarioseeder extends Seeder
         $user15->nombre = "Edson";
         $user15->apellido = "Fernardez Flores";
         $user15->correo = "Edsonf2441@gmail.com";
-        $user15->tipo_usuario = 2;
+        $user15->tipo_usuario = 3;
         $user15->usuario = "Edcito";
         $user15->password = "12345e";
         $user15->save();
@@ -153,7 +153,7 @@ class Usuarioseeder extends Seeder
         $user16->nombre = "Fernando";
         $user16->apellido = "Alvarez";
         $user16->correo = "Fernandof2441@gmail.com";
-        $user16->tipo_usuario = 2;
+        $user16->tipo_usuario = 3;
         $user16->usuario = "Fernandito";
         $user16->password = "12345f";
         $user16->save();
@@ -162,7 +162,7 @@ class Usuarioseeder extends Seeder
         $user17->nombre = "Gabriel";
         $user17->apellido = "Montenegro Flores";
         $user17->correo = "Gabrielf2441@gmail.com";
-        $user17->tipo_usuario = 2;
+        $user17->tipo_usuario = 3;
         $user17->usuario = "Gabrielito";
         $user17->password = "12345g";
         $user17->save();
@@ -171,10 +171,28 @@ class Usuarioseeder extends Seeder
         $user18->nombre = "Jorge";
         $user18->apellido = "Mendoza Flores";
         $user18->correo = "Jorgef2441@gmail.com";
-        $user18->tipo_usuario = 2;
+        $user18->tipo_usuario = 3;
         $user18->usuario = "Jorguito";
         $user18->password = "12345j";
         $user18->save();
+
+        $user = new User();
+        $user->nombre = "Docente";
+        $user->apellido = "Docente Flores";
+        $user->correo = "docente@gmail.com";
+        $user->tipo_usuario = 1;
+        $user->usuario = "docente";
+        $user->password = "docente";
+        $user->save();
+
+        $user = new User();
+        $user->nombre = "estudiante";
+        $user->apellido = "estudiante Flores";
+        $user->correo = "estudiante@gmail.com";
+        $user->tipo_usuario = 3;
+        $user->usuario = "estudiante";
+        $user->password = "estudiante";
+        $user->save();
 
 
     }

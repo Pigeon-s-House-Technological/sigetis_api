@@ -23,7 +23,8 @@ use App\Http\Controllers\Api\RegistroController;
 use App\Http\Controllers\Api\Usuario_grupoController;
 use App\Http\Controllers\Api\Datos_actividadesController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CreargruposController;
+use App\Http\Controllers\Api\AsignacionPorParesController;
+use App\Http\Controllers\Api\ObservacionController;
 
 
 //rutas predefeinidas ya traen el index, store, destroy, show, update
@@ -42,7 +43,7 @@ Route::apiResource('asignaciones', AsignacionEvaluacionController::class);
 Route::apiResource('opcionesPreguntaMultiple', OpcionPreguntaMultipleController::class);
 Route::apiResource('respuestasComplemento', RespuestaComplementoController::class);
 Route::apiResource('respuestasOpcionMultiple', RespuestaOpcionMultipleController::class);
-Route::apiResource('respuestasPuntuacion', RespuestaPuntuacionController::class);
+Route::apiResource('observaciones', ObservacionController::class);
 
 // Rutas personalizadas
 Route::patch('/evaluacionesP/{id}', [EvaluacionController::class, 'updatePartial']);
@@ -60,6 +61,7 @@ Route::patch('/asignacionesP/{id}', [AsignacionEvaluacionController::class, 'upd
 Route::patch('/opcionesPreguntaMultipleP/{id}', [OpcionPreguntaMultipleController::class, 'updatePartial']);
 Route::patch('/respuestasComplementoP/{id}', [RespuestaComplementoController::class, 'updatePartial']);
 Route::patch('/respuestasOpcionMultipleP/{id}', [RespuestaOpcionMultipleController::class, 'updatePartial']);
+Route::patch('/observacionesP/{id}', [ObservacionController::class, 'updatePartial']);
 
 Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);//1->auto,2->cruzada,3->pares
 Route::get('/evaluaciones/estado-individual', [estadis_evaluacionController::class, 'contador_estados_por_usuario']);
@@ -68,9 +70,11 @@ Route::get('/gruposUsuarios', [Usuario_grupoController::class, 'index']);
 Route::post('/gruposUsuarios', [Usuario_grupoController::class, 'store']);
 Route::get('/gruposUsuarios/{id}', [Usuario_grupoController::class, 'show']);
 Route::patch('/gruposUsuarios/{id}', [Usuario_grupoController::class, 'update']);
+Route::get('/gruposUsuarios/integrantes/{id_grupo}', [Usuario_grupoController::class, 'integrantes']);
 Route::delete('/gruposUsuarios/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'destroy']);
 Route::get('/reporte/grupo/{id_grupo}', [Datos_actividadesController::class, 'obtenerDatosPorGrupo']);
-Route::get('usuarios-aleatorios/{cantidad}', [CreargruposController::class, 'mostrarUsuariosAlAzar']);
+Route::get('/pares/{id_grupo}', [AsignacionPorParesController::class, 'asignarUsuarios']);
+Route::get('/crearGrupo/{cantidad}/{id_grupo}', [Usuario_grupoController::class, 'asignarUsuariosGrupo']);
 
 Route::controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');

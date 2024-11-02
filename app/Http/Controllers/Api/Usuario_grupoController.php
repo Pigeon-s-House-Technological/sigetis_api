@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+
 use App\Models\User;
 use App\Models\Grupo;
 
 class Usuario_grupoController extends Controller
 {
     public function index(){
-
 
         $usuarios = User::with('grupos')->get();
 
@@ -22,7 +24,8 @@ class Usuario_grupoController extends Controller
             ];
             return response()->json($data, 404);
         }
-        return response()->json($usuario_grupo, 200);
+
+        return response()->json($usuarios, 200);
     }
 
     public function store(Request $request){
@@ -62,9 +65,8 @@ class Usuario_grupoController extends Controller
     
         $usuario->grupos()->attach($request->id_grupo);
     
-
         $data = [
-            'usuario' => $usuario_grupo,
+            'usuario' => $usuario,
             'status' => 201
         ];
     
@@ -92,81 +94,115 @@ class Usuario_grupoController extends Controller
     {
         $usuario = User::find($id_usuario);
         if (!$usuario) {
-
             $data = [
                 'message' => 'Usuario no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
-        $usuario_grupo->delete();
-        $data = [
-            'message' => 'Usuario eliminado',
-            'status' => 200
-        ];
-        return response()->json($data, 200);
-    }
 
-    public function update(Request $request, $id){
-        $usuario_grupo = Usuario_grupo::find($id);
-        if(!$usuario){
+        $grupo = Grupo::find($id_grupo);
+        if (!$grupo) {
             $data = [
-                'message' => 'Usuario no encontrado',
+                'message' => 'Grupo no encontrado',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
-        $usuario->update([
-            'id_usuario' => $request->id_usuario,
-            'id_grupo' => $request->id_grupo
-        ]);
+
+        $usuario->grupos()->detach($id_grupo);
+
         $data = [
-            'message' => 'Usuario actualizado',
+            'message' => 'Relación usuario-grupo eliminada',
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    public function integrantes($id_grupo)
+    {
+        $grupo = Grupo::with('usuarios')->find($id_grupo);
+        if (!$grupo) {
+            $data = [
+                'message' => 'Grupo no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Extraer solo los nombres y los IDs de los usuarios
+        $integrantes = $grupo->usuarios->filter(function($usuario) {
+            return $usuario->tipo_usuario != 1;
+        })->map(function($usuario) {
+            return [
+                'id' => $usuario->id,
+                'nombre' => $usuario->nombre
+            ];
+        });;
+
+        $data = [
+            'integrantes' => $integrantes,
             'status' => 200
         ];
         return response()->json($data, 200);
     }
 
-    public function updatePartial(Request $request, $id){
-        // Buscar el usuario por ID
-        $usuario_grupo = Usuario_grupo::find($id);
-        if (!$usuario_grupo) {
+    public function asignarUsuariosGrupo($cantidad, $id_grupo)
+    {
+        $grupo = Grupo::find($id_grupo);
+        if (!$grupo) {
             return response()->json([
-                'message' => 'Usuario no encontrado',
+                'message' => 'Grupo no encontrado',
                 'status' => 404
             ], 404);
         }
 
-        // Validar los datos de la solicitud
-        $validator = Validator::make($request->all(), [
-            'id_usuario' => 'nullable|integer',
-            'id_grupo' => 'nullable|integer'
-        ]);
+        $usuariosCreados = [];
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ], 400);
-        }
+        for ($i = 0; $i < $cantidad; $i++) {
+            $username = 'user_' . Str::random(10);
+            $password = Str::random(15);
+            $tipo_usuario = 3;
 
-        // Asignar los valores de la solicitud al objeto usuario si están presentes
-        if ($request->has('id_usuario')) {
-            $usuario_grupo->id_usuario = $request->input('id_usuario');
-        }
-        if ($request->has('id_grupo')) {
-            $usuario_grupo->id_grupo = $request->input('id_grupo');
-        }
+            if($i==0){
+                $usuario = User::create([
+                    'nombre' => $username,
+                    'apellido' => 'Apellido Jefe',
+                    'usuario' => $username,
+                    'correo' => $username . '@gmail.com', // Asegúrate de que el email sea único
+                    'password' => Hash::make($password),
+                    'password_confirmation' => Hash::make($password),
+                    'tipo_usuario' => 2 // Asumiendo que tipo_usuario 2 es el tipo deseado
+                ]);
+                $tipo_usuario = 2;
+            }else{
+                $usuario = User::create([
+                    'nombre' => $username,
+                    'apellido' => 'Apellido',
+                    'usuario' => $username,
+                    'correo' => $username . '@gmail.com', // Asegúrate de que el email sea único
+                    'password' => Hash::make($password),
+                    'password_confirmation' => Hash::make($password),
+                    'tipo_usuario' => 3 // Asumiendo que tipo_usuario 2 es el tipo deseado
+                ]);
+            }
 
-        // Guardar el objeto usuario en la base de datos
-        $usuario_grupo->save();
+            // Asignar el usuario al grupo
+            $grupo->usuarios()->attach($usuario->id);
+
+            // Agregar el usuario creado al array de respuesta
+            $usuariosCreados[] = [
+                'usuario' => $username,
+                'contraseña' => $password,
+                'tipo_usuario' => $tipo_usuario
+            ];
+        }
 
         return response()->json([
-            'message' => 'Usuario actualizado correctamente',
-            'usuario' => $usuario_grupo,
-            'status' => 200
-        ], 200);
+            'message' => 'Usuarios creados y asignados al grupo',
+            'usuarios' => $usuariosCreados,
+            'status' => 201
+        ], 201);
     }
 }
-

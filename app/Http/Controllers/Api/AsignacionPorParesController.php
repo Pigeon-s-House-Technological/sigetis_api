@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\AsignacionEvaluacion;
 
 class AsignacionPorParesController extends Controller
 {
-    public function asignarUsuarios($id_grupo)
+    public function asignarUsuarios($id_grupo, $id_evaluacion)
     {
         // Obtén todos los usuarios asignados al grupo
         $usuarios = User::whereHas('grupos', function($query) use ($id_grupo) {
@@ -31,6 +32,14 @@ class AsignacionPorParesController extends Controller
                 'usuario_asignador' => $usuario->nombre,
                 'usuario_asignado' => $asignadoA->nombre,
             ];
+
+            AsignacionEvaluacion::create([
+                'id_evaluacion' => $id_evaluacion, 
+                'id_grupo' => $id_grupo,
+                'id_usuario' => $usuario->id,
+                'estado_evaluacion' => false, 
+                'id_usuario_aux' => $asignadoA->id
+            ]);
         }
 
         return response()->json($asignaciones);

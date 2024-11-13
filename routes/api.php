@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\AsignacionEvaluacionController;
 use App\Http\Controllers\Api\OpcionPreguntaMultipleController;
 use App\Http\Controllers\Api\RespuestaComplementoController;
 use App\Http\Controllers\Api\RespuestaOpcionMultipleController;
+use App\Http\Controllers\Api\RespuestaPuntuacionController;
 use App\Http\Controllers\Api\RegistroController;
 use App\Http\Controllers\Api\Usuario_grupoController;
 use App\Http\Controllers\Api\Datos_actividadesController;
@@ -43,6 +44,7 @@ Route::apiResource('asignaciones', AsignacionEvaluacionController::class);
 Route::apiResource('opcionesPreguntaMultiple', OpcionPreguntaMultipleController::class);
 Route::apiResource('respuestasComplemento', RespuestaComplementoController::class);
 Route::apiResource('respuestasOpcionMultiple', RespuestaOpcionMultipleController::class);
+Route::apiResource('respuestasPuntuacion', RespuestaPuntuacionController::class);
 Route::apiResource('observaciones', ObservacionController::class);
 
 // Rutas personalizadas
@@ -61,6 +63,7 @@ Route::patch('/asignacionesP/{id}', [AsignacionEvaluacionController::class, 'upd
 Route::patch('/opcionesPreguntaMultipleP/{id}', [OpcionPreguntaMultipleController::class, 'updatePartial']);
 Route::patch('/respuestasComplementoP/{id}', [RespuestaComplementoController::class, 'updatePartial']);
 Route::patch('/respuestasOpcionMultipleP/{id}', [RespuestaOpcionMultipleController::class, 'updatePartial']);
+Route::patch('/respuestasPuntuacionP/{id}', [RespuestaPuntuacionController::class, 'updatePartial']);
 Route::patch('/observacionesP/{id}', [ObservacionController::class, 'updatePartial']);
 
 Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);//1->auto,2->cruzada,3->pares

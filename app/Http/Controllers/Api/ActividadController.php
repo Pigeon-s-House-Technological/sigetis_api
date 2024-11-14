@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Actividad;
+use App\Models\User;
+use App\Notifications\TareaNotification;
 
 class ActividadController extends Controller
 {
+    
     public function index(){
         $actividad = Actividad::all();
         if ($actividad->isEmpty()) {
@@ -59,6 +63,11 @@ class ActividadController extends Controller
             'actividad' => $actividad,
             'status' => 201
         ];
+
+        User::all()->each(function($user) use ($actividad){
+            $user->notify(new TareaNotification($actividad));
+        });
+
         return response()->json($data, 201);
     }
 

@@ -6,6 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Carbon\Carbon;
+
+use App\Models\Actividad;
 
 class TareaNotification extends Notification
 {
@@ -16,9 +19,9 @@ class TareaNotification extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Actividad $actividad)
     {
-        //
+        $this -> actividad = $actividad;
     }
 
     /**
@@ -29,7 +32,7 @@ class TareaNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -55,7 +58,11 @@ class TareaNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'actividad_id' => $this -> actividad -> id,
+            'actividad' => $this -> actividad -> nombre_actividad,
+            'fecha_inicio' => $this -> actividad -> fecha_inicio,
+            'fecha_fin' => $this -> actividad -> fecha_fin,
+            'time' => Carbon::now() -> diffForHumans(),
         ];
     }
 }

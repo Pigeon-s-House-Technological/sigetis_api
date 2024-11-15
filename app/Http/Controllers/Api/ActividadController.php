@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Actividad;
 use App\Models\User;
 use App\Notifications\TareaNotification;
+use App\Models\Grupo;
 
 class ActividadController extends Controller
 {
@@ -44,13 +45,19 @@ class ActividadController extends Controller
             return response()->json($data, 400);
         }
 
+        $nombreUsuario = $this->buscarNombreUsuario($request->creador);
+        $nombreGrupo = $this->buscarNombreGrupo($request->grupo);
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($request->grupo);
+
         $actividad = Actividad::create([
             'id_hu' => $request->id_hu,
             'nombre_actividad' => $request->nombre_actividad,
             'estado_actividad' => $request->estado_actividad,
             'fecha_inicio' => $request->fecha_inicio,
             'fecha_fin' => $request->fecha_fin,
-            'encargado' => $request->encargado
+            'encargado' => $request-> encargado,
+            'grupo' => $nombreGrupo,
+            'creador' => $nombreUsuario,
         ]);
         if (!$actividad){
             $data = [
@@ -64,7 +71,7 @@ class ActividadController extends Controller
             'status' => 201
         ];
 
-        User::all()->each(function($user) use ($actividad){
+        User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
             $user->notify(new TareaNotification($actividad));
         });
 
@@ -179,4 +186,36 @@ class ActividadController extends Controller
 
         return response()->json($data, 200);
     }
+
+
+    private function buscarNombreUsuario($id)
+    {
+        $id = intval($id);
+        $usuario = User::find($id);
+        if (!$usuario) {
+            return 'no se encontro nombre';
+        }
+        return $usuario->nombre;
+    }
+
+    private function buscarNombreGrupo($id)
+    {
+        $id = intval($id);
+        $grupo = Grupo::find($id);
+        if (!$grupo) {
+            return 'no se encontro nombre';
+        }
+        return $grupo->nombre_grupo;
+    }
+
+    private function cadenaUsuariosGrupo($idGrupo)
+{
+    $idGrupo = intval($idGrupo);
+    $usuarios = User::whereHas('grupos', function($query) use ($idGrupo) {
+        $query->where('id_grupo', $idGrupo);
+    })->get();
+
+    $cadenaUsuarios = $usuarios->pluck('id')->toArray();
+    return $cadenaUsuarios;
+}
 }

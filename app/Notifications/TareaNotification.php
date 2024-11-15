@@ -62,6 +62,8 @@ class TareaNotification extends Notification
             'actividad' => $this -> actividad -> nombre_actividad,
             'fecha_inicio' => $this -> actividad -> fecha_inicio,
             'fecha_fin' => $this -> actividad -> fecha_fin,
+            'nombre_grupo'  => $this -> actividad -> grupo,
+            'nombre_creador' => $this -> actividad -> creador,
             'time' => Carbon::now() -> diffForHumans(),
         ];
     }

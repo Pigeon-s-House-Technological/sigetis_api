@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\Datos_actividadesController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AsignacionPorParesController;
 use App\Http\Controllers\Api\ObservacionController;
+use App\Http\Controllers\Api\NotificacionController;
 
 
 //rutas predefeinidas ya traen el index, store, destroy, show, update
@@ -80,6 +81,10 @@ Route::get('/pares/{id_grupo}/{id_evaluacion}', [AsignacionPorParesController::c
 Route::get('/crearGrupo/{cantidad}/{id_grupo}', [Usuario_grupoController::class, 'asignarUsuariosGrupo']);
 Route::get('/planilla-evaluacion-datos/{idGrupo}', [AsignacionEvaluacionController::class, 'mostrarDatos']); 
 
+Route::get('/notificaciones', [NotificacionController::class, 'index']);
+Route::post('/notificaciones/marcar-leida', [NotificacionController::class, 'marcarLeida']);
+Route::post('/notificaciones/marcar-todas-leidas', [NotificacionController::class, 'marcarTodasLeidas']);
+Route::get('/notificaciones/usuario/{id}', [NotificacionController::class, 'indexUsuario']);
 
 Route::controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');

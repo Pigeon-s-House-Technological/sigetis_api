@@ -89,10 +89,15 @@ class AuthController extends Controller
                 'message' => 'No autenticado',
             ], 401);
         }
+        $grupos = $user->grupos; // Asumiendo que la relación 'grupos' está definida en el modelo User
+
+        // Determinar el ID del grupo o -1 si pertenece a más de un grupo
+        $grupoId = $grupos->count() > 1 ? -1 : ($grupos->first() ? $grupos->first()->id : null);
 
         return response()->json([
             'message' => 'Usuario autenticado',
             'userData' => $user,
+            'grupoId' => $grupoId,
         ], 200);
     }
 
@@ -103,5 +108,6 @@ class AuthController extends Controller
             'status' => 200
         ], 200)->withCookie($cookie);
     }
+
 
 }

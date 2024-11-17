@@ -27,6 +27,11 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AsignacionPorParesController;
 use App\Http\Controllers\Api\ObservacionController;
 use App\Http\Controllers\Api\NotificacionController;
+use App\Http\Controllers\Api\Informacion_grupo;
+use App\Http\Controllers\Api\Informacion_grupoController;
+Route::get('/grupos_m/{idGrupo}', [Informacion_grupoController::class, 'Mostrar_grupo']);
+
+Route::get('/grupo2/{idGrupo}', [Informacion_grupo::class, 'mostrarIntegrantes']);
 
 
 //rutas predefeinidas ya traen el index, store, destroy, show, update
@@ -76,6 +81,7 @@ Route::get('/gruposUsuarios/{id}', [Usuario_grupoController::class, 'show']);
 Route::patch('/gruposUsuarios/{id}', [Usuario_grupoController::class, 'update']);
 Route::get('/gruposUsuarios/integrantes/{id_grupo}', [Usuario_grupoController::class, 'integrantes']);
 Route::delete('/gruposUsuarios/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'destroy']);
+Route::get('/grupos_info/{id_grupo}', [Usuario_grupoController::class, 'mostrar_informacion']);
 Route::get('/reporte/grupo/{id_grupo}', [Datos_actividadesController::class, 'obtenerDatosPorGrupo']);
 Route::get('/pares/{id_grupo}/{id_evaluacion}', [AsignacionPorParesController::class, 'asignarUsuarios']);
 Route::get('/crearGrupo/{cantidad}/{id_grupo}', [Usuario_grupoController::class, 'asignarUsuariosGrupo']);

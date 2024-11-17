@@ -19,12 +19,14 @@ use App\Http\Controllers\Api\AsignacionEvaluacionController;
 use App\Http\Controllers\Api\OpcionPreguntaMultipleController;
 use App\Http\Controllers\Api\RespuestaComplementoController;
 use App\Http\Controllers\Api\RespuestaOpcionMultipleController;
+use App\Http\Controllers\Api\RespuestaPuntuacionController;
 use App\Http\Controllers\Api\RegistroController;
 use App\Http\Controllers\Api\Usuario_grupoController;
 use App\Http\Controllers\Api\Datos_actividadesController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AsignacionPorParesController;
 use App\Http\Controllers\Api\ObservacionController;
+use App\Http\Controllers\Api\NotificacionController;
 use App\Http\Controllers\Api\Informacion_grupo;
 use App\Http\Controllers\Api\Informacion_grupoController;
 Route::get('/grupos_m/{idGrupo}', [Informacion_grupoController::class, 'Mostrar_grupo']);
@@ -48,6 +50,7 @@ Route::apiResource('asignaciones', AsignacionEvaluacionController::class);
 Route::apiResource('opcionesPreguntaMultiple', OpcionPreguntaMultipleController::class);
 Route::apiResource('respuestasComplemento', RespuestaComplementoController::class);
 Route::apiResource('respuestasOpcionMultiple', RespuestaOpcionMultipleController::class);
+Route::apiResource('respuestasPuntuacion', RespuestaPuntuacionController::class);
 Route::apiResource('observaciones', ObservacionController::class);
 
 // Rutas personalizadas
@@ -66,6 +69,7 @@ Route::patch('/asignacionesP/{id}', [AsignacionEvaluacionController::class, 'upd
 Route::patch('/opcionesPreguntaMultipleP/{id}', [OpcionPreguntaMultipleController::class, 'updatePartial']);
 Route::patch('/respuestasComplementoP/{id}', [RespuestaComplementoController::class, 'updatePartial']);
 Route::patch('/respuestasOpcionMultipleP/{id}', [RespuestaOpcionMultipleController::class, 'updatePartial']);
+Route::patch('/respuestasPuntuacionP/{id}', [RespuestaPuntuacionController::class, 'updatePartial']);
 Route::patch('/observacionesP/{id}', [ObservacionController::class, 'updatePartial']);
 
 Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);//1->auto,2->cruzada,3->pares
@@ -82,6 +86,11 @@ Route::get('/reporte/grupo/{id_grupo}', [Datos_actividadesController::class, 'ob
 Route::get('/pares/{id_grupo}/{id_evaluacion}', [AsignacionPorParesController::class, 'asignarUsuarios']);
 Route::get('/crearGrupo/{cantidad}/{id_grupo}', [Usuario_grupoController::class, 'asignarUsuariosGrupo']);
 Route::get('/planilla-evaluacion-datos/{idGrupo}', [AsignacionEvaluacionController::class, 'mostrarDatos']); 
+
+Route::get('/notificaciones', [NotificacionController::class, 'index']);
+Route::post('/notificaciones/marcar-leida', [NotificacionController::class, 'marcarLeida']);
+Route::post('/notificaciones/marcar-todas-leidas', [NotificacionController::class, 'marcarTodasLeidas']);
+Route::get('/notificaciones/usuario/{id}', [NotificacionController::class, 'indexUsuario']);
 
 Route::controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');

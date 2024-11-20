@@ -13,15 +13,17 @@ use App\Models\Actividad;
 class TareaNotification extends Notification
 {
     use Queueable;
+    private $accion;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Actividad $actividad)
+    public function __construct(Actividad $actividad, $accion)
     {
         $this -> actividad = $actividad;
+        $this -> accion = $accion;
     }
 
     /**
@@ -64,6 +66,7 @@ class TareaNotification extends Notification
             'fecha_fin' => $this -> actividad -> fecha_fin,
             'nombre_grupo'  => $this -> actividad -> grupo,
             'nombre_creador' => $this -> actividad -> creador,
+            'accion' => $this -> accion,
             'time' => Carbon::now() -> diffForHumans(),
         ];
     }

@@ -19,6 +19,8 @@ class CreateActividadTable extends Migration
             $table->foreignId('encargado')->nullable()->constrained('users')->onDetelete('cascade');
             $table->string('nombre_actividad');
             $table->integer('estado_actividad')->nullable();
+            $table->string('grupo')->nullable();
+            $table->string('creador')->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();
             $table->timestamps();

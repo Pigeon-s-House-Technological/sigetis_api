@@ -37,7 +37,7 @@ class usuarioController extends Controller
         ];
         return response()->json($data, 200);
     }
-    /*
+   /* 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'nombre_user' => 'required',

@@ -101,6 +101,8 @@ class AuthController extends Controller
         ], 200);
     }
 
+
+
     public function logout(Request $request){
         $cookie = Cookie::forget('cookie_token');
         return response([

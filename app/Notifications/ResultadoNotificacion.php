@@ -8,22 +8,23 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Carbon\Carbon;
 
-use App\Models\Actividad;
+use App\Models\Resultado;
 
-class TareaNotification extends Notification
+class ResultadoNotificacion extends Notification
 {
     use Queueable;
     private $accion;
-
+    private $nombre_actividad;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Actividad $actividad, $accion)
+    public function __construct(Resultado $resultado, $accion, $nombre_actividad)
     {
-        $this -> actividad = $actividad;
+        $this -> resultado = $resultado;
         $this -> accion = $accion;
+        $this -> nombre_actividad = $nombre_actividad;
     }
 
     /**
@@ -60,12 +61,10 @@ class TareaNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'actividad_id' => $this -> actividad -> id,
-            'actividad' => $this -> actividad -> nombre_actividad,
-            'fecha_inicio' => $this -> actividad -> fecha_inicio,
-            'fecha_fin' => $this -> actividad -> fecha_fin,
-            'nombre_grupo'  => $this -> actividad -> grupo,
-            'nombre_creador' => $this -> actividad -> creador,
+            'actividad_resulado' => $this -> resultado -> id,
+            'id_actividad' => $this -> resultado -> id_actividad,
+            'nombre_grupo'  => $this -> resultado -> grupo,
+            'nombre_creador' => $this -> resultado -> creador,
             'accion' => $this -> accion,
             'time' => Carbon::now() -> diffForHumans(),
         ];

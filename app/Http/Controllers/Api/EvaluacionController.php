@@ -67,7 +67,15 @@ class EvaluacionController extends Controller
         ];
         return response()->json($data, 200);
     }
-
+    //este se añadio
+    public function getCriteriosByEvaluacion($id)
+{
+    $evaluacion = Evaluacion::with('criterios')->find($id);
+    if (!$evaluacion) {
+        return response()->json(['message' => 'Evaluación no encontrada', 'status' => 404], 404);
+    }
+    return response()->json($evaluacion->criterios, 200);
+}
     public function destroy($id){
         $evaluacion = Evaluacion::find($id);
         if(!$evaluacion){

@@ -57,14 +57,14 @@ class PreguntaComplementoController extends Controller
         return response()->json($data, 201);
     }
 
-    public function show($id){
-        $preg_comp = Pregunta_complemento::find($id);
-        if (!$preg_comp){
-            $data = [
-                'message' => 'No se encontro la preg_comp',
+    public function show($criterioId){
+        $preg_comp = Pregunta_complemento::where('id_criterio_evaluacion', $criterioId)->get();
+
+        if ($preg_comp->isEmpty()) {
+            return response()->json([
+                'message' => 'No se encontró la pregunta complemento para este criterio.',
                 'status' => 404
-            ];
-            return response()->json($data, 404);
+            ], 404);
         }
         return response()->json($preg_comp, 200);
     }

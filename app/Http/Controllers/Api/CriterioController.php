@@ -21,36 +21,43 @@ class CriterioController extends Controller
         }
         return response()->json($criterio_evaluacion, 200);
     }
-    public function store(Request $request){
-        $validator = Validator::make($request->all(), [
-            'id_evaluacion' => 'required',
-            'titulo_criterio' => 'required'
-        ]);
-        If($validator->fails()){
-            $data = [
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ];
-            return response()->json($data, 400);
-        }
-        $criterio_evaluacion = Criterio_evaluacion::create([
-            'id_evaluacion' => $request->id_evaluacion,
-            'titulo_criterio' => $request->titulo_criterio
-        ]);
-        if (!$criterio_evaluacion){
-            $data = [
-                'message' => 'error al crear el criterio de evaluación',
-                'status' => 500
-            ];
-            return response()->json($data, 500);
-        }
-        $data = [
-            'criterio_evaluacion' => $criterio_evaluacion,
-            'status' => 201
-        ];
-        return response()->json($data, 201);
+    public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'id_evaluacion' => 'required|exists:evaluaciones,id',
+        'titulo_criterio' => 'required|string|max:255'
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Error en la validación de los datos',
+            'errors' => $validator->errors(),
+            'status' => 400
+        ], 400);
     }
+
+    $criterio_evaluacion = Criterio_evaluacion::create([
+        'id_evaluacion' => $request->id_evaluacion,
+        'titulo_criterio' => $request->titulo_criterio
+    ]);
+
+    return response()->json([
+        'criterio_evaluacion' => $criterio_evaluacion,
+        'status' => 201
+    ], 201);
+}
+
+public function getByEvaluacion($id)
+{
+    $criterios = Criterio_evaluacion::where('id_evaluacion', $id)->get();
+
+    if ($criterios->isEmpty()) {
+        return response()->json(['message' => 'No se encontraron criterios para esta evaluación', 'status' => 404], 404);
+    }
+
+    return response()->json($criterios, 200);
+}
+
     public function show($id){
         $criterio_evaluacion = Criterio_evaluacion::find($id);
         if(!$criterio_evaluacion){

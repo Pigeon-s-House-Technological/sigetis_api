@@ -59,14 +59,14 @@ class PreguntaOpcionMultipleController extends Controller
         return response()->json($data, 201);
     }
 
-    public function show($id){
-        $preg_op_mult = Pregunta_opcion_multiple::find($id);
-        if (!$preg_op_mult){
-            $data = [
-                'message' => 'No se encontro la preg_op_mult',
+    public function show($criterioId){
+        $preg_op_mult = Pregunta_opcion_multiple::where('id_criterio_evaluacion', $criterioId)->get();
+
+        if ($preg_op_mult->isEmpty()) {
+            return response()->json([
+                'message' => 'No se encontró la pregunta de opción múltiple para este criterio.',
                 'status' => 404
-            ];
-            return response()->json($data, 404);
+            ], 404);
         }
         return response()->json($preg_op_mult, 200);
     }

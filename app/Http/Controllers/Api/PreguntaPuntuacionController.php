@@ -60,17 +60,20 @@ class PreguntaPuntuacionController extends Controller
         return response()->json($data, 201);
     }
 
-    public function show($id){
-        $preguntaPuntuacion = Pregunta_puntuacion::find($id);
-        if(!$preguntaPuntuacion){
-            $data = [
-                'message' => 'Pregunta de puntuación no encontrada',
-                'status' => 200
-            ];
-            return response()->json($data, 404);
-        }
-        return response()->json($preguntaPuntuacion, 200);
+    public function show($criterioId)
+{
+    // Buscar preguntas de puntuación asociadas al criterio
+    $preguntasPuntuacion = Pregunta_puntuacion::where('id_criterio_evaluacion', $criterioId)->get();
+
+    if ($preguntasPuntuacion->isEmpty()) {
+        return response()->json([
+            'message' => 'No hay preguntas de puntuación registradas para este criterio.',
+            'status' => 404
+        ], 404);
     }
+
+    return response()->json($preguntasPuntuacion, 200);
+}
 
     public function updatePartial(Request $request, $id){
         $preguntaPuntuacion = Pregunta_puntuacion::find($id);

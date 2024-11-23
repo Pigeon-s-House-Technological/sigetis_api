@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\AsignacionEvaluacionController;
 use App\Http\Controllers\Api\OpcionPreguntaMultipleController;
 use App\Http\Controllers\Api\RespuestaComplementoController;
 use App\Http\Controllers\Api\RespuestaOpcionMultipleController;
+use App\Http\Controllers\Api\RespuestaPuntuacionController;
 use App\Http\Controllers\Api\RegistroController;
 use App\Http\Controllers\Api\Usuario_grupoController;
 use App\Http\Controllers\Api\Datos_actividadesController;
@@ -42,8 +43,10 @@ Route::apiResource('preguntasComplemento', PreguntaComplementoController::class)
 Route::apiResource('asignaciones', AsignacionEvaluacionController::class);
 Route::apiResource('opcionesPreguntaMultiple', OpcionPreguntaMultipleController::class);
 Route::apiResource('respuestasComplemento', RespuestaComplementoController::class);
+Route::apiResource('respuestasPuntuacion', RespuestaPuntuacionController::class);
 Route::apiResource('respuestasOpcionMultiple', RespuestaOpcionMultipleController::class);
 Route::apiResource('observaciones', ObservacionController::class);
+
 
 // Rutas personalizadas
 Route::patch('/evaluacionesP/{id}', [EvaluacionController::class, 'updatePartial']);
@@ -66,6 +69,8 @@ Route::patch('/observacionesP/{id}', [ObservacionController::class, 'updateParti
 Route::get('/evaluaciones/estado-grupo', [estadis_evaluacionController::class, 'contador_estados_por_grupo']);//1->auto,2->cruzada,3->pares
 Route::get('/evaluaciones/estado-individual', [estadis_evaluacionController::class, 'contador_estados_por_usuario']);
 Route::get('/evaluaciones/tipo', [estadis_evaluacionController::class, 'tipo_evaluacion']);
+Route::get('evaluaciones/{id}/criterios', [CriterioController::class, 'getByEvaluacion']);
+Route::get('/criterios/{id}', [CriterioController::class, 'show']);
 Route::get('/gruposUsuarios', [Usuario_grupoController::class, 'index']);
 Route::post('/gruposUsuarios', [Usuario_grupoController::class, 'store']);
 Route::get('/gruposUsuarios/{id}', [Usuario_grupoController::class, 'show']);
@@ -76,6 +81,10 @@ Route::get('/reporte/grupo/{id_grupo}', [Datos_actividadesController::class, 'ob
 Route::get('/pares/{id_grupo}/{id_evaluacion}', [AsignacionPorParesController::class, 'asignarUsuarios']);
 Route::get('/crearGrupo/{cantidad}/{id_grupo}', [Usuario_grupoController::class, 'asignarUsuariosGrupo']);
 Route::get('/planilla-evaluacion-datos/{idGrupo}', [AsignacionEvaluacionController::class, 'mostrarDatos']); 
+
+Route::get('/criterios/{criterioId}/preguntas', [PreguntaPuntuacionController::class, 'getByCriterio']);
+Route::get('/criterios/{criterioId}/preguntasOpcionMultiple', [PreguntaOpcionMultipleController::class, 'getByCriterio']);
+Route::get('/criterios/{criterioId}/preguntasComplemento', [PreguntaComplementoController::class, 'getByCriterio']);
 
 Route::controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');

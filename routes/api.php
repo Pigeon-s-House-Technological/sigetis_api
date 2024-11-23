@@ -92,9 +92,11 @@ Route::post('/notificaciones/marcar-leida', [NotificacionController::class, 'mar
 Route::post('/notificaciones/marcar-todas-leidas', [NotificacionController::class, 'marcarTodasLeidas']);
 Route::get('/notificaciones/usuario/{id}', [NotificacionController::class, 'indexUsuario']);
 
+Route::patch('/user-edit/{id}', [AuthController::class, 'update']);
 Route::controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');
     Route::post('/login', 'login');
+    
     Route::group(['middleware' => 'auth:sanctum'], function(){
         Route::post('/logout', 'logout');
         Route::get('/user-profile', 'userProfile');

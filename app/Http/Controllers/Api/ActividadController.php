@@ -208,7 +208,6 @@ class ActividadController extends Controller
             'status' => 200
         ];
         
-        \Log::info('Nombre del grupo:', ['idGrupo' => $actividad->grupo]);
         $grupo = Grupo::where('nombre_grupo', $actividad->grupo)->first();
         if (!$grupo) {
             return response()->json([

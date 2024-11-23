@@ -109,5 +109,67 @@ class AuthController extends Controller
         ], 200)->withCookie($cookie);
     }
 
+    public function update(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Usuario no encontrado',
+                'status' => 404
+            ], 404);
+        }
+        // Validar la contraseña actual
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'nombre' => 'sometimes|string|max:255',
+            'apellido' => 'sometimes|string|max:255',
+            'usuario' => 'sometimes|string|max:255|unique:users,usuario,' . $user->id,
+            'correo' => 'sometimes|string|email|max:255|unique:users,correo,' . $user->id,
+            'password' => 'sometimes|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Error en la validación de los datos',
+                'errors' => $validator->errors(),
+                'status' => 400
+            ], 400);
+        }
+
+        // Verificar la contraseña actual
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'message' => 'Contraseña actual incorrecta',
+                'status' => 401
+            ], 401);
+        }
+
+        // Actualizar la información del usuario
+        if ($request->has('nombre')) {
+            $user->nombre = $request->nombre;
+        }
+        if ($request->has('correo')) {
+            $user->correo = $request->correo;
+        }
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->password);
+        }
+        if ($request->has('usuario')) {
+            $user->usuario = $request->usuario;
+        }
+        if ($request->has('apellido')) {
+            $user->apellido = $request->apellido;
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Usuario actualizado correctamente',
+            'user' => $user,
+            'status' => 200
+        ], 200);
+    }
+
 
 }

@@ -248,18 +248,18 @@ class ActividadController extends Controller
     }
 
     private function cadenaUsuariosGrupo($idGrupo, $idTutor)
-{
-    $idGrupo = intval($idGrupo);
-    $idTutor = intval($idTutor);
-    $usuarios = User::whereHas('grupos', function($query) use ($idGrupo) {
-        $query->where('id_grupo', $idGrupo);
-    })->get();
+    {
+        $idGrupo = intval($idGrupo);
+        $idTutor = intval($idTutor);
+        $usuarios = User::whereHas('grupos', function($query) use ($idGrupo) {
+            $query->where('id_grupo', $idGrupo);
+        })->get();
 
-    if ($idTutor != 0) {
-        $usuarios->push(User::find($idTutor));
+        if ($idTutor != 0) {
+            $usuarios->push(User::find($idTutor));
+        }
+
+        $cadenaUsuarios = $usuarios->pluck('id')->toArray();
+        return $cadenaUsuarios;
     }
-
-    $cadenaUsuarios = $usuarios->pluck('id')->toArray();
-    return $cadenaUsuarios;
-}
 }

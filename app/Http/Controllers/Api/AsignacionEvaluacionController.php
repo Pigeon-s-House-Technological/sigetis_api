@@ -70,7 +70,7 @@ class AsignacionEvaluacionController extends Controller
         $id_grupo = $request->id_grupo;
         $evaluacion = Evaluacion::find($request->id_evaluacion);
         $nombre_evaluacion = $evaluacion->nombre_evaluacion;
-        $cadenaUsuarios = $this->cadenaUsuariosGrupo($id_grupo);
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($id_grupo, true);
 
 
 
@@ -146,7 +146,7 @@ class AsignacionEvaluacionController extends Controller
         $id_grupo = $asignar->id_grupo;
         $evaluacion = Evaluacion::find($asignar->id_evaluacion);
         $nombre_evaluacion = $evaluacion->nombre_evaluacion;
-        $cadenaUsuarios = $this->cadenaUsuariosGrupo($id_grupo);
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($id_grupo, false);
 
 
 
@@ -241,12 +241,16 @@ class AsignacionEvaluacionController extends Controller
         
     }
 
-    private function cadenaUsuariosGrupo($idGrupo)
-    {
+    private function cadenaUsuariosGrupo($idGrupo, $bandera)//bandera es false si no se quiere incluir a los estudiantes
+    {   
         $idGrupo = intval($idGrupo);
-        $usuarios = User::whereHas('grupos', function($query) use ($idGrupo) {
-            $query->where('id_grupo', $idGrupo);
-        })->get();
+        $usuarios = collect(); // Inicializar la colección de usuarios
+
+        if ($bandera) {
+            $usuarios = User::whereHas('grupos', function($query) use ($idGrupo) {
+                $query->where('id_grupo', $idGrupo);
+            })->get();
+        }
 
         $grupo = Grupo::find($idGrupo);
         if ($grupo && $grupo->id_tutor) {
@@ -255,6 +259,7 @@ class AsignacionEvaluacionController extends Controller
                 $usuarios->push($tutor);
             }
         }
+        
 
         $cadenaUsuarios = $usuarios->pluck('id')->toArray();
         return $cadenaUsuarios;

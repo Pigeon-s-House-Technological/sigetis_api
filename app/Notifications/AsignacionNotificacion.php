@@ -63,8 +63,9 @@ class AsignacionNotificacion extends Notification
     {
         return [
             'asignacion_id' => $this -> asignacion -> id,
-            'evaluacion_id' => $this -> asignacion -> evaluacion_id,
+            'evaluacion_id' => $this -> asignacion -> id_evaluacion,
             'estado' => $this -> asignacion -> estado_evaluacion,
+            'id_grupo' => $this -> asignacion -> id_grupo,
             'nombre_evaluacion' => $this -> data["nombre_evaluacion"],
             'accion' => $this -> accion,
             'time' => Carbon::now() -> diffForHumans(),

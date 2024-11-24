@@ -47,7 +47,7 @@ class ActividadController extends Controller
 
         $nombreUsuario = $this->buscarNombreUsuario($request->creador);
         $nombreGrupo = $this->buscarNombreGrupo($request->grupo);
-        $cadenaUsuarios = $this->cadenaUsuariosGrupo($request->grupo, 0);
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($request->grupo);
 
         $actividad = Actividad::create([
             'id_hu' => $request->id_hu,
@@ -72,7 +72,7 @@ class ActividadController extends Controller
         ];
 
         User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
-            $user->notify(new TareaNotification($actividad, 'crear'));
+            $user->notify(new TareaNotification($actividad, 'crear', $request->grupo));
         });
 
         return response()->json($data, 201);
@@ -105,7 +105,7 @@ class ActividadController extends Controller
             'status' => 200
         ];
 
-        $cadenaUsuarios = $this->cadenaUsuariosGrupo($actividad->grupo, 0);
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($actividad->grupo);
 
         User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
             $user->notify(new TareaNotification($actividad, 'actualizar'));
@@ -138,7 +138,7 @@ class ActividadController extends Controller
             ], 404);
         }
         
-        $cadenaUsuarios = $this->cadenaUsuariosGrupo($grupo->id, 0);
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($grupo->id);
         
         User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
             $user->notify(new TareaNotification($actividad, 'eliminar'));
@@ -247,16 +247,19 @@ class ActividadController extends Controller
         return $grupo->nombre_grupo;
     }
 
-    private function cadenaUsuariosGrupo($idGrupo, $idTutor)
+    private function cadenaUsuariosGrupo($idGrupo)
     {
         $idGrupo = intval($idGrupo);
-        $idTutor = intval($idTutor);
         $usuarios = User::whereHas('grupos', function($query) use ($idGrupo) {
             $query->where('id_grupo', $idGrupo);
         })->get();
 
-        if ($idTutor != 0) {
-            $usuarios->push(User::find($idTutor));
+        $grupo = Grupo::find($idGrupo);
+        if ($grupo && $grupo->id_tutor) {
+            $tutor = User::find($grupo->id_tutor);
+            if ($tutor) {
+                $usuarios->push($tutor);
+            }
         }
 
         $cadenaUsuarios = $usuarios->pluck('id')->toArray();

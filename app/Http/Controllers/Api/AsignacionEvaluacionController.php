@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\AsignacionEvaluacion;
+use App\Models\Evaluacion;
+use App\Models\Grupo;
+use App\Models\User;
+use App\Notifications\AsignacionNotificacion;
 
 class AsignacionEvaluacionController extends Controller
 {
@@ -62,6 +66,22 @@ class AsignacionEvaluacionController extends Controller
             'asignacion' => $asignar,
             'status' => 201
         ];
+
+        $id_grupo = $request->id_grupo;
+        $evaluacion = Evaluacion::find($request->id_evaluacion);
+        $nombre_evaluacion = $evaluacion->nombre_evaluacion;
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($id_grupo, true);
+
+
+
+        $datos = [
+            'nombre_evaluacion' => $nombre_evaluacion,
+        ];
+
+        User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($asignar, $datos) {
+            $user->notify(new AsignacionNotificacion($asignar, 'crear', $datos));
+        });
+        
         return response()->json($data, 201);
     }
 
@@ -122,6 +142,21 @@ class AsignacionEvaluacionController extends Controller
             ];
             return response()->json($data, 400);
         }
+
+        $id_grupo = $asignar->id_grupo;
+        $evaluacion = Evaluacion::find($asignar->id_evaluacion);
+        $nombre_evaluacion = $evaluacion->nombre_evaluacion;
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($id_grupo, false);
+
+
+
+        $datos = [
+            'nombre_evaluacion' => $nombre_evaluacion,
+        ];
+
+        User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($asignar, $datos) {
+            $user->notify(new AsignacionNotificacion($asignar, 'crear', $datos));
+        });
 
         if ($request->id_evaluacion != null) {
             $asignar->id_evaluacion = $request->id_evaluacion;
@@ -204,5 +239,29 @@ class AsignacionEvaluacionController extends Controller
         ];
         return response()->json($data, 200);
         
+    }
+
+    private function cadenaUsuariosGrupo($idGrupo, $bandera)//bandera es false si no se quiere incluir a los estudiantes
+    {   
+        $idGrupo = intval($idGrupo);
+        $usuarios = collect(); // Inicializar la colección de usuarios
+
+        if ($bandera) {
+            $usuarios = User::whereHas('grupos', function($query) use ($idGrupo) {
+                $query->where('id_grupo', $idGrupo);
+            })->get();
+        }
+
+        $grupo = Grupo::find($idGrupo);
+        if ($grupo && $grupo->id_tutor) {
+            $tutor = User::find($grupo->id_tutor);
+            if ($tutor) {
+                $usuarios->push($tutor);
+            }
+        }
+        
+
+        $cadenaUsuarios = $usuarios->pluck('id')->toArray();
+        return $cadenaUsuarios;
     }
 }

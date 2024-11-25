@@ -25,4 +25,9 @@ class Pregunta_complemento extends Model
     {
         return $this->belongsTo(Criterio_evaluacion::class, 'id_criterior_evaluacion');
     }
+
+    public function respuestas()
+    {
+        return $this->hasMany(Respuesta_complemento::class, 'id_pregunta_complemento');
+    }
 }

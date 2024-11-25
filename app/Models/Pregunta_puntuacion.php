@@ -26,4 +26,9 @@ class Pregunta_puntuacion extends Model
     {
         return $this->belongsTo(Criterio_evaluacion::class, 'id_criterior_evaluacion');
     }
+
+    public function respuestas()
+    {
+        return $this->hasMany(Respuesta_puntuacion::class, 'id_pregunta_puntuacion');
+    }
 }

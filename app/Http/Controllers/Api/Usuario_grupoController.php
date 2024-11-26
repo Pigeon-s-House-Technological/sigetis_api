@@ -141,8 +141,18 @@ class Usuario_grupoController extends Controller
             ];
         });;
 
+        $id_jefe = $grupo->id_jefe_grupo;
+        $jefe_grupo = User::find($id_jefe);
+        $nombre_jefe = $jefe_grupo->nombre;
+
+        $id_tutor = $grupo->id_tutor;
+        $tutor_grupo = User::find($id_tutor);
+        $nombre_tutor = $tutor_grupo->nombre;
+
         $data = [
             'integrantes' => $integrantes,
+            'jefe_grupo' => $nombre_jefe,
+            'tutor_grupo' => $nombre_tutor,
             'status' => 200
         ];
         return response()->json($data, 200);

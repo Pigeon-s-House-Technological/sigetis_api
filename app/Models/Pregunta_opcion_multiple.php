@@ -27,4 +27,9 @@ class Pregunta_opcion_multiple extends Model
         return $this->belongsTo(Criterio_evaluacion::class, 'id_criterio_evaluacion');
     }
 
+    public function opciones()
+    {
+        return $this->hasMany(Opcion_pregunta_multiple::class, 'id_pregunta_multiple');
+    }
+
 }

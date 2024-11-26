@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Actividad;
+use App\Models\User;
+use App\Notifications\TareaNotification;
+use App\Models\Grupo;
 
 class ActividadController extends Controller
 {
+    
     public function index(){
         $actividad = Actividad::all();
         if ($actividad->isEmpty()) {
@@ -40,13 +45,19 @@ class ActividadController extends Controller
             return response()->json($data, 400);
         }
 
+        $nombreUsuario = $this->buscarNombreUsuario($request->creador);
+        $nombreGrupo = $this->buscarNombreGrupo($request->grupo);
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($request->grupo);
+
         $actividad = Actividad::create([
             'id_hu' => $request->id_hu,
             'nombre_actividad' => $request->nombre_actividad,
             'estado_actividad' => $request->estado_actividad,
             'fecha_inicio' => $request->fecha_inicio,
             'fecha_fin' => $request->fecha_fin,
-            'encargado' => $request->encargado
+            'encargado' => $request-> encargado,
+            'grupo' => $nombreGrupo,
+            'creador' => $nombreUsuario,
         ]);
         if (!$actividad){
             $data = [
@@ -59,6 +70,11 @@ class ActividadController extends Controller
             'actividad' => $actividad,
             'status' => 201
         ];
+
+        User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
+            $user->notify(new TareaNotification($actividad, 'crear', $request->grupo));
+        });
+
         return response()->json($data, 201);
     }
 
@@ -88,6 +104,14 @@ class ActividadController extends Controller
             'actividad' => $actividad,
             'status' => 200
         ];
+
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($actividad->grupo);
+
+        User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
+            $user->notify(new TareaNotification($actividad, 'actualizar'));
+        });
+
+
         return response()->json($data, 200);
     }
 
@@ -100,11 +124,27 @@ class ActividadController extends Controller
             ];
             return response()->json($data, 404);
         }
-        $actividad->delete();
+        
         $data = [
             'message' => 'Actividad eliminada',
             'status' => 200
         ];
+        
+        $grupo = Grupo::where('nombre_grupo', $actividad->grupo)->first();
+        if (!$grupo) {
+            return response()->json([
+                'message' => 'Grupo no encontrado',
+                'status' => 404
+            ], 404);
+        }
+        
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($grupo->id);
+        
+        User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
+            $user->notify(new TareaNotification($actividad, 'eliminar'));
+        });
+
+        $actividad->delete();
         return response()->json($data, 200);
     }
 
@@ -160,14 +200,69 @@ class ActividadController extends Controller
             $actividad->encargado = $request->encargado;
         }
         
-        $actividad->save();
+        
 
         $data = [
-            'message' => 'Criterio de evaluación actualizado',
+            'message' => 'Actividad actualizada',
             'actividad' => $actividad,
             'status' => 200
         ];
+        
+        $grupo = Grupo::where('nombre_grupo', $actividad->grupo)->first();
+        if (!$grupo) {
+            return response()->json([
+                'message' => 'Grupo no encontrado',
+                'status' => 404
+            ], 404);
+        }
+        
+        $cadenaUsuarios = $this->cadenaUsuariosGrupo($grupo->id, 0);
+        
+        User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
+            $user->notify(new TareaNotification($actividad, 'editar'));
+        });
 
+        $actividad->save();
         return response()->json($data, 200);
+    }
+
+
+    private function buscarNombreUsuario($id)
+    {
+        $id = intval($id);
+        $usuario = User::find($id);
+        if (!$usuario) {
+            return 'no se encontro nombre';
+        }
+        return $usuario->nombre;
+    }
+
+    private function buscarNombreGrupo($id)
+    {
+        $id = intval($id);
+        $grupo = Grupo::find($id);
+        if (!$grupo) {
+            return 'no se encontro nombre';
+        }
+        return $grupo->nombre_grupo;
+    }
+
+    private function cadenaUsuariosGrupo($idGrupo)
+    {
+        $idGrupo = intval($idGrupo);
+        $usuarios = User::whereHas('grupos', function($query) use ($idGrupo) {
+            $query->where('id_grupo', $idGrupo);
+        })->get();
+
+        $grupo = Grupo::find($idGrupo);
+        if ($grupo && $grupo->id_tutor) {
+            $tutor = User::find($grupo->id_tutor);
+            if ($tutor) {
+                $usuarios->push($tutor);
+            }
+        }
+
+        $cadenaUsuarios = $usuarios->pluck('id')->toArray();
+        return $cadenaUsuarios;
     }
 }

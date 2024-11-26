@@ -87,6 +87,9 @@ Route::get('/pares/{id_grupo}/{id_evaluacion}', [AsignacionPorParesController::c
 Route::get('/crearGrupo/{cantidad}/{id_grupo}', [Usuario_grupoController::class, 'asignarUsuariosGrupo']);
 Route::get('/planilla-evaluacion-datos/{idGrupo}', [AsignacionEvaluacionController::class, 'mostrarDatos']); 
 
+Route::get('/listarPreguntas/{id}', [EvaluacionController::class, 'listarPreguntas']);
+Route::get('/listarRespuestas/{id}', [AsignacionEvaluacionController::class, 'listarRespuestas']);
+
 Route::get('/notificaciones', [NotificacionController::class, 'index']);
 Route::post('/notificaciones/marcar-leida', [NotificacionController::class, 'marcarLeida']);
 Route::post('/notificaciones/marcar-todas-leidas', [NotificacionController::class, 'marcarTodasLeidas']);

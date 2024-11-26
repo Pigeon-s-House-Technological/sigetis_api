@@ -26,7 +26,7 @@ class RespuestaPuntuacionController extends Controller
 
         $validator = Validator::make($request->all(),
         [
-            'id_preunta_puntuacion' => 'required',
+            'id_pregunta_puntuacion' => 'required',
             'respuesta_puntuacion' => 'required',
             'id_grupo_evaluacion' => 'required',
         ]);

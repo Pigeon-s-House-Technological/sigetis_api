@@ -34,4 +34,14 @@ class Criterio_evaluacion extends Model
     {
         return $this->hasMany(Pregunta_opcion_multiple::class, 'id_criterio_evaluacion');
     }
+
+    public function pregunta_puntuacion()
+    {
+        return $this->hasMany(Pregunta_puntuacion::class, 'id_criterio_evaluacion');
+    }
+
+    public function pregunta_complemento()
+    {
+        return $this->hasMany(Pregunta_complemento::class, 'id_criterio_evaluacion');
+    }
 }

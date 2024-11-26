@@ -155,7 +155,7 @@ class AsignacionEvaluacionController extends Controller
         ];
 
         User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($asignar, $datos) {
-            $user->notify(new AsignacionNotificacion($asignar, 'crear', $datos));
+            $user->notify(new AsignacionNotificacion($asignar, 'editar', $datos));
         });
 
         if ($request->id_evaluacion != null) {
@@ -255,13 +255,36 @@ class AsignacionEvaluacionController extends Controller
         $grupo = Grupo::find($idGrupo);
         if ($grupo && $grupo->id_tutor) {
             $tutor = User::find($grupo->id_tutor);
+            \Log::info('Tutor: ' . $tutor->nombre);
             if ($tutor) {
                 $usuarios->push($tutor);
+                \Log::info('Tutor: ' . $tutor->nombre);
             }
         }
         
 
         $cadenaUsuarios = $usuarios->pluck('id')->toArray();
         return $cadenaUsuarios;
+    }
+
+    public function listarRespuestas($id){
+        $asignacion = AsignacionEvaluacion::with([
+            'evaluacion.criterios.pregunta_opcion_multiple.opciones.respuestas',
+            'evaluacion.criterios.pregunta_puntuacion.respuestas',
+            'evaluacion.criterios.pregunta_complemento.respuestas'
+        ])->find($id);
+    
+        if (!$asignacion) {
+            return response()->json([
+                'message' => 'Asignación de evaluación no encontrada',
+                'status' => 404
+            ], 404);
+        }
+    
+        return response()->json([
+            'message' => 'Respuestas de la evaluación',
+            'asignacion' => $asignacion,
+            'status' => 200
+        ], 200);
     }
 }

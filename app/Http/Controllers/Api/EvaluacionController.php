@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Evaluacion;
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\Criterio_evaluacion;
+use App\Models\Pregunta_opcion_multiple;
+use App\Models\Pregunta_puntuacion;
+use App\Models\Pregunta_complemento;
+use App\Models\Opcion_pregunta_multiple;
+
 class EvaluacionController extends Controller
 {
     public function index()
@@ -146,5 +152,26 @@ class EvaluacionController extends Controller
         ];
 
         return response()->json($data, 200);
+    }
+
+    public function listarPreguntas($id){
+        $evaluacion = Evaluacion::with([
+            'criterios.pregunta_opcion_multiple.opciones',
+            'criterios.pregunta_puntuacion',
+            'criterios.pregunta_complemento'
+        ])->find($id);
+    
+        if (!$evaluacion) {
+            return response()->json([
+                'message' => 'Evaluación no encontrada',
+                'status' => 404
+            ], 404);
+        }
+    
+        return response()->json([
+            'message' => 'Preguntas de la evaluación',
+            'evaluacion' => $evaluacion,
+            'status' => 200
+        ], 200);
     }
 }

@@ -23,8 +23,10 @@ class Sprint extends Model
     /**
      * Define la relación con el modelo Evaluacion.
      */
-    public function evaluacion()
+    public function grupo()
     {
         return $this->belongsTo(Grupo::class, 'id_grupo');
     }
+
+    
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Grupo;
 use App\Models\Usuario;
 use App\Models\AsignacionEvaluacion;
+use App\Models\Criterio;
 
 class Evaluacion extends Model
 {
@@ -24,5 +25,10 @@ class Evaluacion extends Model
     public function asignacionEvaluacion()
     {
         return $this->hasMany(AsignacionEvaluacion::class, 'id_evaluacion');
+    }
+
+    public function criterios()
+    {
+        return $this->hasMany(Criterio_evaluacion::class, 'id_evaluacion');
     }
 }

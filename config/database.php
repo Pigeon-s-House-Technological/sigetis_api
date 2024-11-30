@@ -76,6 +76,12 @@ return [
             'prefix_indexes' => true,
             'schema' => 'public',
             'sslmode' => 'prefer',
+            'dump' => [
+                'dump_binary_path' => env('DB_PGSQL_DUMP_PATH', ''), // Opcional, si pg_dump no está en el PATH
+                'use_single_transaction' => true,
+                'timeout' => 60,
+                // Opcionalmente, puedes agregar más opciones aquí
+            ],
         ],
 
         'sqlsrv' => [

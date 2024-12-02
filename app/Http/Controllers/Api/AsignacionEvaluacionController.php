@@ -14,8 +14,10 @@ use App\Notifications\AsignacionNotificacion;
 
 class AsignacionEvaluacionController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $asignar = AsignacionEvaluacion::all();
+
         if ($asignar->isEmpty()) {
             $data = [
                 'message' => 'No se encontraron asignaciones',
@@ -23,6 +25,18 @@ class AsignacionEvaluacionController extends Controller
             ];
             return response()->json($data, 200);
         }
+
+        // Transformar cada asignación para agregar nombre_aux y nombre_grupo_aux
+        $asignar = $asignar->map(function ($asignacion) {
+            $usuarioAux = User::find($asignacion->id_usuario_aux);
+            $grupoAux = Grupo::find($asignacion->id_grupo_aux);
+
+            $asignacion->nombre_aux = $usuarioAux ? $usuarioAux->nombre : null;
+            $asignacion->nombre_grupo_aux = $grupoAux ? $grupoAux->nombre_grupo : null;
+
+            return $asignacion;
+        });
+
         return response()->json($asignar, 200);
     }
 
@@ -87,14 +101,27 @@ class AsignacionEvaluacionController extends Controller
 
     public function show($id){
         $asignar = AsignacionEvaluacion::find($id);
-        if (!$asignar){
+        if (!$asignar) {
             $data = [
-                'message' => 'No se encontro la asignar',
+                'message' => 'No se encontró la asignación',
                 'status' => 404
             ];
             return response()->json($data, 404);
         }
-        return response()->json($asignar, 200);
+    
+        // Obtener el usuario auxiliar y el grupo auxiliar
+        $usuarioAux = User::find($asignar->id_usuario_aux);
+        $grupoAux = Grupo::find($asignar->id_grupo_aux);
+    
+        // Preparar los datos para la respuesta
+        $data = [
+            'asignacion' => $asignar,
+            'nombre_aux' => $usuarioAux ? $usuarioAux->nombre : 'N/A',
+            'nombre_grupo_aux' => $grupoAux ? $grupoAux->nombre_grupo : 'N/A',
+            'status' => 200
+        ];
+    
+        return response()->json($data, 200);
     }
 
     public function destroy($id){

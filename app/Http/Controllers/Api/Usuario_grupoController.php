@@ -215,4 +215,80 @@ class Usuario_grupoController extends Controller
             'status' => 201
         ], 201);
     }
+
+    public function asignarJefeGrupo($id_usuario, $id_grupo)
+    {
+        $usuario = User::find($id_usuario);
+        if (!$usuario) {
+            return response()->json([
+                'message' => 'Usuario no encontrado',
+                'status' => 404
+            ], 404);
+        }
+
+        $grupo = Grupo::find($id_grupo);
+        if (!$grupo) {
+            return response()->json([
+                'message' => 'Grupo no encontrado',
+                'status' => 404
+            ], 404);
+        }
+
+        $grupo->id_jefe_grupo = $usuario->id;
+        $grupo->save();
+
+        $usuario->tipo_usuario = 2;
+        $usuario->save();
+
+        return response()->json([
+            'message' => 'Jefe de grupo asignado',
+            'status' => 200
+        ], 200);
+    }
+
+    public function asignarTutorGrupo($id_usuario, $id_grupo)
+    {
+        $usuario = User::find($id_usuario);
+        if (!$usuario) {
+            return response()->json([
+                'message' => 'Usuario no encontrado',
+                'status' => 404
+            ], 404);
+        }
+
+        $grupo = Grupo::find($id_grupo);
+        if (!$grupo) {
+            return response()->json([
+                'message' => 'Grupo no encontrado',
+                'status' => 404
+            ], 404);
+        }
+
+        $grupo->id_tutor = $usuario->id;
+        $grupo->save();
+
+        return response()->json([
+            'message' => 'Jefe de grupo asignado',
+            'status' => 200
+        ], 200);
+    }
+
+    public function usuariosSinGrupo(){
+        // Obtener todos los usuarios que no tienen grupo
+        $usuariosSinGrupo = User::doesntHave('grupos')->get();
+
+        if ($usuariosSinGrupo->isEmpty()) {
+            return response()->json([
+                'message' => 'No se encontraron usuarios sin grupo',
+                'status' => 200
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Usuarios sin grupo encontrados',
+            'usuarios' => $usuariosSinGrupo,
+            'status' => 200
+        ], 200);
+
+    }
 }

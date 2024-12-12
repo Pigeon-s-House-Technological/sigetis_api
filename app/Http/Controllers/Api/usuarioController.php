@@ -37,46 +37,20 @@ class usuarioController extends Controller
         ];
         return response()->json($data, 200);
     }
-    /*
-    public function store(Request $request){
-        $validator = Validator::make($request->all(), [
-            'nombre_user' => 'required',
-            'apellido_user' => 'required',
-            'correo' => 'required|unique:usuario',
-            'tipo_usuario' => 'required'
-        ]);
 
-        if($validator->fails()){
+    public function listarPorTipo($tipo){
+        $usuarios = User::where('tipo_usuario', $tipo)->get();
+        if($usuarios->isEmpty()){
             $data = [
-                'message' => 'Error en la validacion de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400
+                'message' => 'No hay usuarios registrados con ese tipo',
+                'status' => 200
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 404);
         }
-        $usuario = Usuario::create([
-            'nombre_user' => $request->nombre_user,
-            'apellido_user' => $request->apellido_user,
-            'correo' => $request->correo,
-            'tipo_usuario' => $request->tipo_usuario
-        ]);
-
-        if(!$usuario){
-            $data = [
-                'message' => 'Error al crear el usuario',
-                'status' => 500
-            ];
-            return response()->json($data, 500);
-        }
-
-        $data = [
-            'usuario' => $usuario,
-            'status' => 201
-        ];
-
-        return response()->json($data, 201);
+        return response()->json($usuarios, 200);
     }
 
+    /*
     
 
     public function destroy($id){
@@ -167,5 +141,7 @@ class usuarioController extends Controller
             'status' => 200
         ], 200);
     }*/
+
+    
 }
 

@@ -95,6 +95,11 @@ Route::post('/notificaciones/marcar-leida', [NotificacionController::class, 'mar
 Route::post('/notificaciones/marcar-todas-leidas', [NotificacionController::class, 'marcarTodasLeidas']);
 Route::get('/notificaciones/usuario/{id}', [NotificacionController::class, 'indexUsuario']);
 
+Route::get('/usuariosTipo/{tipo}', [usuarioController::class, 'listarPorTipo']);
+Route::get('/usuariosSG', [Usuario_grupoController::class, 'usuariosSinGrupo']);
+Route::get('/asiganarJefe/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'asignarJefeGrupo']);
+Route::get('/asignarDocente/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'asignarTutorGrupo']);
+
 Route::patch('/user-edit/{id}', [AuthController::class, 'update']);
 Route::controller(AuthController::class)->group(function(){
     Route::post('/register', 'register');

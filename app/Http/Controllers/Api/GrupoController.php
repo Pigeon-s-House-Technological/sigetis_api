@@ -24,7 +24,7 @@ class GrupoController extends Controller
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'nombre_grupo' => 'required',
+            'nombre_grupo' => 'required|unique:grupo',
             'descripcion_grupo' => 'required',
             'id_tutor' => 'required',
             'id_jefe_grupo' => 'required'

@@ -52,6 +52,7 @@ Route::apiResource('respuestasComplemento', RespuestaComplementoController::clas
 Route::apiResource('respuestasOpcionMultiple', RespuestaOpcionMultipleController::class);
 Route::apiResource('respuestasPuntuacion', RespuestaPuntuacionController::class);
 Route::apiResource('observaciones', ObservacionController::class);
+Route::apiResource('usuariosGrupos', Usuario_grupoController::class);
 
 // Rutas personalizadas
 Route::patch('/evaluacionesP/{id}', [EvaluacionController::class, 'updatePartial']);
@@ -99,6 +100,9 @@ Route::get('/usuariosTipo/{tipo}', [usuarioController::class, 'listarPorTipo']);
 Route::get('/usuariosSG', [Usuario_grupoController::class, 'usuariosSinGrupo']);
 Route::get('/asiganarJefe/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'asignarJefeGrupo']);
 Route::get('/asignarDocente/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'asignarTutorGrupo']);
+Route::delete('/eliminarIntegrante/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'eliminarIntegrante']);
+
+Route::get('/gruposPorTutor/{id_tutor}', [GrupoController::class, 'gruposPorTutor']);
 
 Route::patch('/user-edit/{id}', [AuthController::class, 'update']);
 Route::controller(AuthController::class)->group(function(){

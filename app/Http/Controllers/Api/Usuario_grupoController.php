@@ -90,7 +90,7 @@ class Usuario_grupoController extends Controller
         return response()->json($data, 200);
     }
 
-    public function destroy($id_usuario, $id_grupo)
+    public function eliminarIntegrante($id_usuario, $id_grupo)
     {
         $usuario = User::find($id_usuario);
         if (!$usuario) {
@@ -186,6 +186,8 @@ class Usuario_grupoController extends Controller
                     'tipo_usuario' => 2 // Asumiendo que tipo_usuario 2 es el tipo deseado
                 ]);
                 $tipo_usuario = 2;
+                $grupo->id_jefe_grupo = $usuario->id;
+                $grupo->save();
             }else{
                 $usuario = User::create([
                     'nombre' => $username,
@@ -275,7 +277,9 @@ class Usuario_grupoController extends Controller
 
     public function usuariosSinGrupo(){
         // Obtener todos los usuarios que no tienen grupo
-        $usuariosSinGrupo = User::doesntHave('grupos')->get();
+        $usuariosSinGrupo = User::doesntHave('grupos')
+                            ->whereNotIn('tipo_usuario', [0, 1])
+                            ->get();
 
         if ($usuariosSinGrupo->isEmpty()) {
             return response()->json([

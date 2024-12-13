@@ -165,4 +165,23 @@ class GrupoController extends Controller
 
         return response()->json($data, 200);
     }
+
+    public function gruposPorTutor($id_tutor)
+    {
+        // Obtener todos los grupos que tienen el id_tutor especificado
+        $grupos = Grupo::where('id_tutor', $id_tutor)->get();
+
+        if ($grupos->isEmpty()) {
+            return response()->json([
+                'message' => 'No se encontraron grupos para el tutor especificado',
+                'status' => 200
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Grupos encontrados',
+            'grupos' => $grupos,
+            'status' => 200
+        ], 200);
+    }
 }

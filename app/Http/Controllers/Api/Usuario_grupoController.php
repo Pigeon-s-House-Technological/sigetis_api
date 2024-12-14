@@ -131,23 +131,24 @@ class Usuario_grupoController extends Controller
             return response()->json($data, 404);
         }
 
-        // Extraer solo los nombres y los IDs de los usuarios
+        // Extraer solo los nombres, los IDs de los usuarios y si son jefes de grupo
         $integrantes = $grupo->usuarios->filter(function($usuario) {
             return $usuario->tipo_usuario != 1;
-        })->map(function($usuario) {
+        })->map(function($usuario) use ($grupo) {
             return [
                 'id' => $usuario->id,
-                'nombre' => $usuario->nombre
+                'nombre' => $usuario->nombre,
+                'jefe' => $usuario->id == $grupo->id_jefe_grupo
             ];
-        });;
+        });
 
         $id_jefe = $grupo->id_jefe_grupo;
         $jefe_grupo = User::find($id_jefe);
-        $nombre_jefe = $jefe_grupo->nombre;
+        $nombre_jefe = $jefe_grupo ? $jefe_grupo->nombre : 'N/A';
 
         $id_tutor = $grupo->id_tutor;
         $tutor_grupo = User::find($id_tutor);
-        $nombre_tutor = $tutor_grupo->nombre;
+        $nombre_tutor = $tutor_grupo ? $tutor_grupo->nombre : 'N/A';
 
         $data = [
             'integrantes' => $integrantes,
@@ -234,6 +235,15 @@ class Usuario_grupoController extends Controller
                 'message' => 'Grupo no encontrado',
                 'status' => 404
             ], 404);
+        }
+
+        if ($grupo->id_jefe_grupo) {
+            $usuarioAnterior = User::find($grupo->id_jefe_grupo);
+            if ($usuarioAnterior) {
+                // Cambiar el tipo de usuario del jefe de grupo anterior a 3
+                $usuarioAnterior->tipo_usuario = 3;
+                $usuarioAnterior->save();
+            }
         }
 
         $grupo->id_jefe_grupo = $usuario->id;

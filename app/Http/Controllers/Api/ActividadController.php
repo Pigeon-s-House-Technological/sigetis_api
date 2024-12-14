@@ -71,7 +71,7 @@ class ActividadController extends Controller
             'status' => 201
         ];
 
-        User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
+        User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad, $request) {
             $user->notify(new TareaNotification($actividad, 'crear', $request->grupo));
         });
 
@@ -108,7 +108,7 @@ class ActividadController extends Controller
         $cadenaUsuarios = $this->cadenaUsuariosGrupo($actividad->grupo);
 
         User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
-            $user->notify(new TareaNotification($actividad, 'actualizar'));
+            $user->notify(new TareaNotification($actividad, 'actualizar', $actividad->grupo));
         });
 
 
@@ -141,7 +141,7 @@ class ActividadController extends Controller
         $cadenaUsuarios = $this->cadenaUsuariosGrupo($grupo->id);
         
         User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
-            $user->notify(new TareaNotification($actividad, 'eliminar'));
+            $user->notify(new TareaNotification($actividad, 'eliminar', $actividad->grupo));
         });
 
         $actividad->delete();
@@ -219,7 +219,7 @@ class ActividadController extends Controller
         $cadenaUsuarios = $this->cadenaUsuariosGrupo($grupo->id, 0);
         
         User::whereIn('id', $cadenaUsuarios)->each(function($user) use ($actividad) {
-            $user->notify(new TareaNotification($actividad, 'editar'));
+            $user->notify(new TareaNotification($actividad, 'editar', $actividad->grupo));
         });
 
         $actividad->save();

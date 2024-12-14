@@ -15,7 +15,7 @@ class CreateSprintTable extends Migration
     {
         Schema::create('sprint', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_grupo')->constrained('grupo')->onDetelete('cascade');
+            $table->foreignId('id_grupo')->constrained('grupo')->onDelete('cascade');
             $table->integer('numero_sprint');
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();

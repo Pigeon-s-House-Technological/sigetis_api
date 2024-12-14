@@ -15,7 +15,7 @@ class CreateElementoTable extends Migration
     {
         Schema::create('elemento', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_actividad')->constrained('actividad');
+            $table->foreignId('id_actividad')->constrained('actividad')->onDelete('cascade');
             $table->string('nombre_elemento');
             $table->string('descripcion_elemento')->nullable();
             $table->string('link_elemento')->nullable();

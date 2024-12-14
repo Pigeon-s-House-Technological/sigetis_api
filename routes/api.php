@@ -98,7 +98,7 @@ Route::get('/notificaciones/usuario/{id}', [NotificacionController::class, 'inde
 
 Route::get('/usuariosTipo/{tipo}', [usuarioController::class, 'listarPorTipo']);
 Route::get('/usuariosSG', [Usuario_grupoController::class, 'usuariosSinGrupo']);
-Route::get('/asiganarJefe/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'asignarJefeGrupo']);
+Route::get('/asignarJefe/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'asignarJefeGrupo']);
 Route::get('/asignarDocente/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'asignarTutorGrupo']);
 Route::delete('/eliminarIntegrante/{id_usuario}/{id_grupo}', [Usuario_grupoController::class, 'eliminarIntegrante']);
 

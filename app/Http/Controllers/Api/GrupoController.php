@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Grupo;
 use Illuminate\Support\Facades\Validator;
 
-
 class GrupoController extends Controller
 {
     public function index(){
@@ -86,6 +85,7 @@ class GrupoController extends Controller
             ];
             return response()->json($data, 404);
         }
+
         $grupo->delete();
         $data = [
             'message' => 'Grupo eliminado',

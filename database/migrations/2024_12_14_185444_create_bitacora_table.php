@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateImagenHuTable extends Migration
+class CreateBitacoraTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateImagenHuTable extends Migration
      */
     public function up()
     {
-        Schema::create('imagen_hu', function (Blueprint $table) {
+        Schema::create('bitacora', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_hu')->constrained('historia_usuario')->onDelete('cascade');
-            $table->string('nombre_imagen');
+            $table->string('tabla');
+            $table->string('accion');
+            $table->text('datos_anteriores')->nullable();
+            $table->text('datos_nuevos')->nullable();
+            $table->timestamp('fecha');
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateImagenHuTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('imagen_hu');
+        Schema::dropIfExists('bitacora');
     }
 }

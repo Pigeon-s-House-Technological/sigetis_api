@@ -1,0 +1,4 @@
+Iniciando respaldo de la base de datos... 
+Fecha y hora: sáb._14_12_2024_20 
+Respaldo de la base de datos creado exitosamente. 
+Proceso completado. 

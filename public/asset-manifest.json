@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.05ee5d1f.css",
+    "main.js": "/static/js/main.4388312f.js",
+    "static/media/evaluacionCruzada.png": "/static/media/evaluacionCruzada.eaf69419a2bf83970559.png",
+    "static/media/evaluacionEnPares.png": "/static/media/evaluacionEnPares.bc7c534bc8fa1712d90e.png",
+    "static/media/autoevaluacion.png": "/static/media/autoevaluacion.3b83ec36c32e5db4593c.png",
+    "index.html": "/index.html",
+    "main.05ee5d1f.css.map": "/static/css/main.05ee5d1f.css.map",
+    "main.4388312f.js.map": "/static/js/main.4388312f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.05ee5d1f.css",
+    "static/js/main.4388312f.js"
+  ]
+}

@@ -22,6 +22,7 @@ return [
     'allowed_origins' => [
         'http://localhost:3000',
         'https://sigetis.netlify.app', 
+        'http://pigeons.tis.cs.umss.edu.bo'
     ],
 
     'allowed_origins_patterns' => [],
